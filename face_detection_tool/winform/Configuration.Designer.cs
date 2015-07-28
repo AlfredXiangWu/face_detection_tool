@@ -183,6 +183,11 @@
             this.ResumeLayout(false);
             this.PerformLayout();
 
+            // Default
+            textBox2.Text = "Z:\\User\\wuxiang\\data\\AFW\\testimages";
+            textBox3.Text = "Z:\\User\\wuxiang\\data\\AFW\\list_afw.txt";
+            textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\AFW";
+
         }
 
         #endregion

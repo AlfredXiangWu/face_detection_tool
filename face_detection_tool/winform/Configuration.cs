@@ -11,12 +11,40 @@ namespace face_detection_tool
 {
     public partial class Configuration : Form
     {
+        /// <summary>
+        /// Image Path
+        /// </summary>
+        private string _image_path_;
+        public string frmImagePath
+        {
+            get {return _image_path_;}
+            set {_image_path_ = value;}
+        }
+
+        /// <summary>
+        /// List File 
+        /// </summary>
+        private string _list_;
+        public string frmList
+        {
+            get { return _list_; }
+            set { _list_ = value;}
+        }
+
+        /// <summary>
+        /// FR Path
+        /// </summary>
+        private string _fr_path_;
+        public string frmFrPath
+        {
+            get { return _fr_path_; }
+            set { _fr_path_ = value; }
+        }
+
+
         public Configuration()
         {
             InitializeComponent();
-            textBox2.Text = "Z:\\User\\wuxiang\\data\\AFW\\testimages";
-            textBox3.Text = "Z:\\User\\wuxiang\\data\\AFW\\list_afw.txt";
-            textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\AFW";
         }
 
         /// <summary>
@@ -62,7 +90,9 @@ namespace face_detection_tool
         /// </summary>
         private void button4_Click(object sender, EventArgs e)
         {
-
+            _image_path_ = textBox2.Text;
+            _list_ = textBox3.Text;
+            _fr_path_ = textBox5.Text;
         }
 
         /// <summary>
@@ -72,11 +102,6 @@ namespace face_detection_tool
         {
             this.Close();
         }
-
-
-        
-
-
 
     }
 }
