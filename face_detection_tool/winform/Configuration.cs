@@ -32,15 +32,24 @@ namespace face_detection_tool
         }
 
         /// <summary>
-        /// FR Path
+        /// Detection FR Path
         /// </summary>
-        private string _fr_path_;
-        public string frmFrPath
+        private string _detection_fr_path_;
+        public string frmDetectionFrPath
         {
-            get { return _fr_path_; }
-            set { _fr_path_ = value; }
+            get { return _detection_fr_path_; }
+            set { _detection_fr_path_ = value; }
         }
 
+        /// <summary>
+        /// Ground Truth FR Path
+        /// </summary>
+        private string _gt_fr_path_;
+        public string frmGtFrPath
+        {
+            get { return _gt_fr_path_; }
+            set { _gt_fr_path_ = value; }
+        }
 
         public Configuration()
         {
@@ -73,7 +82,7 @@ namespace face_detection_tool
         }
 
         /// <summary>
-        /// Select FR Path
+        /// Select Detection FR Path
         /// </summary>
         private void button3_Click(object sender, EventArgs e)
         {
@@ -85,6 +94,7 @@ namespace face_detection_tool
             }
         }
 
+        public event EventHandler accept;
         /// <summary>
         /// OK
         /// </summary>
@@ -92,7 +102,14 @@ namespace face_detection_tool
         {
             _image_path_ = textBox2.Text;
             _list_ = textBox3.Text;
-            _fr_path_ = textBox5.Text;
+            _detection_fr_path_ = textBox5.Text;
+            _gt_fr_path_ = textBox7.Text;
+
+            if (accept != null)
+            {
+                accept(this, EventArgs.Empty);
+            }
+
         }
 
         /// <summary>
@@ -101,6 +118,16 @@ namespace face_detection_tool
         private void button5_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "Select Image File Path";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                textBox7.Text = dialog.SelectedPath;
+            }
         }
 
     }
