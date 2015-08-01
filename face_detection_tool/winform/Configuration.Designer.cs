@@ -185,7 +185,7 @@
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(612, 23);
             this.textBox7.TabIndex = 12;
-            this.textBox7.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\AFW";
+            this.textBox7.Text = "Z:\\User\\wuxiang\\data\\AFW\\gt";
             // 
             // textBox8
             // 

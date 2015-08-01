@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Drawing;
 
 namespace face_detection_tool
 {
@@ -90,7 +91,7 @@ namespace face_detection_tool
                         for (int i = 0; i < num; i++)
                         {
                             string[] temp = sr.ReadLine().ToString().Split('.');
-                            path[i] = _detection_fr_path_ + "\\" + temp[0] + ".jpg.fr";
+                            path[i] = _detection_fr_path_ + "\\" + temp[0] + ".fr";
                         }
                         break;
                     }
@@ -107,5 +108,43 @@ namespace face_detection_tool
             
             return path;
         }
+
+        /// <summary>
+        /// Draw the bounding box on the face detection image
+        /// </summary>
+        /// <param name="img">picturebox.Image</param>
+        /// <param name="fr">The path of fr file</param>
+        /// <returns>The probability of face box</returns>
+        public double[] showFR(Image img, string fr, Color color)
+        {
+            int num_face = 0;
+            StreamReader sr_detect_fr = new StreamReader(fr);
+            num_face = Convert.ToInt32(sr_detect_fr.ReadLine().ToString());
+            int xtl, ytl, xbr, ybr;
+            double[] prob = new double[num_face];
+            string str;
+            for (int i = 0; i < num_face; i++)
+            {
+                str = sr_detect_fr.ReadLine().ToString();
+                str = str.Replace(' ', '\t');
+                string[] s = str.Split('\t');
+                xtl = Convert.ToInt32(s[0]);
+                ytl = Convert.ToInt32(s[1]);
+                xbr = Convert.ToInt32(s[2]);
+                ybr = Convert.ToInt32(s[3]);
+                if (s.Length ==5)
+                    prob[i] = Convert.ToDouble(s[4]);
+                else 
+                    prob[i] = 1;
+
+                Graphics g = Graphics.FromImage(img);
+                Pen pen = new Pen(color, 4.0f);
+                g.DrawRectangle(pen, new Rectangle(xtl, ytl, xbr - xtl + 1, ybr - ytl + 1));
+                g.Dispose();
+            }
+            return prob;
+        }
+
+
     }
 }

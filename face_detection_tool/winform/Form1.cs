@@ -36,6 +36,8 @@ namespace face_detection_tool
         void new_configuration_accept(object sender, EventArgs e)
         {
             Configuration new_configuration = (Configuration)sender;
+            button1.Enabled = true;
+            button2.Enabled = true;
 
             //get path
             io.frmImagePath = new_configuration.frmImagePath;
@@ -52,32 +54,50 @@ namespace face_detection_tool
             pictureBox1.Image = img;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
-            // detection fr
-            int num_detect_face = 0;
-            StreamReader sr_detect_fr = new StreamReader(detection_fr_path[count]);
-            num_detect_face = Convert.ToInt32(sr_detect_fr.ReadLine().ToString());
-            int xtl, ytl, xbr, ybr;
-            double prob = 0;
-            string str;
-            for (int i = 0; i < num_detect_face; i++)
-            {
-                str = sr_detect_fr.ReadLine().ToString();
-                string[] s = str.Split(' ');
-                xtl = Convert.ToInt32(s[0]);
-                ytl = Convert.ToInt32(s[1]);
-                xbr = Convert.ToInt32(s[2]);
-                ybr = Convert.ToInt32(s[3]);
-                prob = Convert.ToDouble(s[4]);
+            // show detection result
+            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue);
+            // show ground truth
+            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red);
 
-                Graphics g = Graphics.FromImage(pictureBox1.Image);
-                Pen pen = new Pen(Color.Blue, 2.0f);
-                g.DrawRectangle(pen, new Rectangle(xtl, ytl, xbr - xtl + 1, ybr - ytl + 1));
-                g.Dispose();
-            }
-            
-            new_configuration.Hide();
+             new_configuration.Hide();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (count == 0)
+            {
+                count = io.getNum();
+            }
+            count = count - 1;
+
+            img = new Bitmap(img_path[count]);
+            pictureBox1.Image = null;
+            pictureBox1.Image = img;
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+
+            // show detection result
+            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue);
+            // show ground truth
+            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (count == io.getNum() - 1)
+            {
+                count = -1;
+            }
+            count = count + 1;
+            img = new Bitmap(img_path[count]);
+            pictureBox1.Image = null;
+            pictureBox1.Image = img;
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+
+            // show detection result
+            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue);
+            // show ground truth
+            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red);
+        }
 
     }
 }
