@@ -56,9 +56,9 @@ namespace face_detection_tool
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
             // show detection result
-            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue);
+            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue, "detection");
             // show ground truth
-            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red);
+            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red, "gt");
 
              new_configuration.Hide();
         }
@@ -82,9 +82,9 @@ namespace face_detection_tool
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
             // show detection result
-            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue);
+            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue, "detection");
             // show ground truth
-            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red);
+            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red, "gt");
         }
 
         /// <summary>
@@ -105,9 +105,9 @@ namespace face_detection_tool
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
             // show detection result
-            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue);
+            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue, "detection");
             // show ground truth
-            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red);
+            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red, "gt");
         }
 
         /// <summary>

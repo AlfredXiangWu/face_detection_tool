@@ -93,7 +93,7 @@ namespace face_detection_tool
                             for (int i = 0; i < num; i++)
                             {
                                 string[] temp = sr.ReadLine().ToString().Split('.');
-                                path[i] = _detection_fr_path_ + "\\" + temp[0] + ".fr";
+                                path[i] = _detection_fr_path_ + "\\" + temp[0] + ".jpg.fr";
                             }
                             break;
                         }
@@ -115,40 +115,85 @@ namespace face_detection_tool
             }
         }
 
-        /// <summary>
-        /// Draw the bounding box on the face detection image
-        /// </summary>
-        /// <param name="img">picturebox.Image</param>
-        /// <param name="fr">The path of fr file</param>
-        /// <returns>The probability of face box</returns>
-        public double[] showFR(Image img, string fr, Color color)
+
+        
+       /// <summary>
+       /// Draw the bounding box on the detection image
+       /// </summary>
+       /// <param name="img">The detection image</param>
+       /// <param name="fr">Bounding box(rectangle or ellipse)</param>
+       /// <param name="color">Color of bounding box</param>
+       /// <param name="type">FR type("detection" or "gt")</param>
+       /// <returns>The probability of face bounding box</returns>
+        public double[] showFR(Image img, string fr, Color color, string type)
         {
             int num_face = 0;
-            StreamReader sr_detect_fr = new StreamReader(fr);
+            StreamReader sr_fr = new StreamReader(fr);
             try
             {
-                num_face = Convert.ToInt32(sr_detect_fr.ReadLine().ToString());
-                float xtl, ytl, xbr, ybr;
+                num_face = Convert.ToInt32(sr_fr.ReadLine().ToString());
+
+                float xtl, ytl, width, height;
                 double[] prob = new double[num_face];
                 string str;
-                for (int i = 0; i < num_face; i++)
-                {
-                    str = sr_detect_fr.ReadLine().ToString();
-                    str = str.Replace(' ', '\t');
-                    string[] s = str.Split('\t');
-                    xtl = Convert.ToSingle(s[0]);
-                    ytl = Convert.ToSingle(s[1]);
-                    xbr = Convert.ToSingle(s[2]);
-                    ybr = Convert.ToSingle(s[3]);
-                    if (s.Length == 5)
-                        prob[i] = Convert.ToDouble(s[4]);
-                    else
-                        prob[i] = 1;
 
-                    Graphics g = Graphics.FromImage(img);
-                    Pen pen = new Pen(color, 4.0f);
-                    g.DrawRectangle(pen, xtl, ytl, xbr - xtl + 1, ybr - ytl + 1);                  
-                    g.Dispose();
+                if (String.Equals(type, "detection"))
+                {
+                    
+                    for (int i = 0; i < num_face; i++)
+                    {
+                        str = sr_fr.ReadLine().ToString();
+                        str = str.Replace(' ', '\t');
+                        string[] s = str.Split('\t');
+                        xtl = Convert.ToSingle(s[0]);
+                        ytl = Convert.ToSingle(s[1]);
+                        width = Convert.ToSingle(s[2]) - xtl + 1;
+                        height = Convert.ToSingle(s[3]) - ytl + 1;
+                        prob[i] = Convert.ToDouble(s[4]);
+
+                        Graphics g = Graphics.FromImage(img);
+                        Pen pen = new Pen(color, 4.0f);
+                        g.DrawRectangle(pen, xtl, ytl, width, height);
+                        g.Dispose();
+                    }
+                }
+                else if (String.Equals(type, "gt"))
+                {
+                    for (int i = 0; i < num_face; i++)
+                    {
+                        str = sr_fr.ReadLine().ToString();
+                        str = str.Replace(' ', '\t');
+                        string[] s = str.Split('\t');
+                        if (s.Length == 5)
+                        {
+                            xtl = -Convert.ToSingle(s[0]);
+                            ytl =  -Convert.ToSingle(s[1]);
+                            width = Convert.ToSingle(s[0])*2;
+                            height = Convert.ToSingle(s[1])*2;
+                            float angle = Convert.ToSingle(Convert.ToDouble(s[2])/Math.PI*180);
+                            prob[i] = 1;
+
+                            Graphics g = Graphics.FromImage(img);
+                            g.TranslateTransform(Convert.ToSingle(s[3]), Convert.ToSingle(s[4]));
+                            g.RotateTransform(angle);
+                            Pen pen = new Pen(color, 4.0f);
+                            g.DrawEllipse(pen, xtl, ytl, width, height);
+                            g.Dispose();
+                        }
+                        else
+                        {
+                            xtl = Convert.ToSingle(s[0]);
+                            ytl = Convert.ToSingle(s[1]);
+                            width = Convert.ToSingle(s[2]) - xtl + 1;
+                            height = Convert.ToSingle(s[3]) - ytl + 1;
+                            prob[i] = 1;
+
+                            Graphics g = Graphics.FromImage(img);
+                            Pen pen = new Pen(color, 4.0f);
+                            g.DrawRectangle(pen, xtl, ytl, width, height);
+                            g.Dispose();
+                        }
+                    }
                 }
                 return prob;
             }

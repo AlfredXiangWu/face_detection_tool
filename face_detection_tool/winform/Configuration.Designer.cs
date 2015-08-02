@@ -65,7 +65,8 @@
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.textBox2.Size = new System.Drawing.Size(612, 23);
             this.textBox2.TabIndex = 1;
-            this.textBox2.Text = "Z:\\User\\wuxiang\\data\\AFW\\testimages";
+            //this.textBox2.Text = "Z:\\User\\wuxiang\\data\\AFW\\testimages";
+            this.textBox2.Text = "Z:\\User\\wuxiang\\data\\FDDB\\originalPics";
             // 
             // textBox3
             // 
@@ -75,7 +76,8 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(612, 23);
             this.textBox3.TabIndex = 3;
-            this.textBox3.Text = "Z:\\User\\wuxiang\\data\\AFW\\list_afw.txt";
+            //this.textBox3.Text = "Z:\\User\\wuxiang\\data\\AFW\\list_afw.txt";
+            this.textBox3.Text = "Z:\\User\\wuxiang\\data\\FDDB\\FDDB_list.txt";
             // 
             // textBox4
             // 
@@ -97,7 +99,8 @@
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(612, 23);
             this.textBox5.TabIndex = 5;
-            this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\AFW";
+            //this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\AFW";
+            this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\FDDB";
             // 
             // textBox6
             // 
@@ -185,7 +188,8 @@
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(612, 23);
             this.textBox7.TabIndex = 12;
-            this.textBox7.Text = "Z:\\User\\wuxiang\\data\\AFW\\gt";
+            //this.textBox7.Text = "Z:\\User\\wuxiang\\data\\AFW\\gt";
+            this.textBox7.Text = "Z:\\User\\wuxiang\\data\\FDDB\\gt";
             // 
             // textBox8
             // 
