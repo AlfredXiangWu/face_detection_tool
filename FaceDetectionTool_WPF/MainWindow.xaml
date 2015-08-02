@@ -14,6 +14,7 @@
         <Menu x:Name="menu" Margin="0" VerticalAlignment="Top" Height="23" Grid.ColumnSpan="2">
             <MenuItem Header="File" Padding="6,3">
                 <MenuItem Header="New" Click="New_Click"/>
+                <MenuItem Header="Info" Click="Info_Click"/>
             </MenuItem>
         </Menu>
         <ScrollViewer Margin="5,28,5,5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >

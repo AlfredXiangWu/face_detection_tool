@@ -1,0 +1,26 @@
+﻿<Window x:Class="FaceDetectionTool_WPF.Info"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FaceDetectionTool_WPF"
+        mc:Ignorable="d"
+        Title="Info" Height="224.62" Width="360.606">
+    <Grid>
+        <Label x:Name="label" Content="Image Path" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tb_Path" Height="42" Margin="10,40,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <GroupBox x:Name="groupBox" Header="Image info" HorizontalAlignment="Left" Margin="10,0,0,20" VerticalAlignment="Bottom" Width="150">
+            <StackPanel>
+                <Label x:Name="l_Width" Content="width"/>
+                <Label x:Name="l_Height" Content="height"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox x:Name="groupBox1" Header="Detection info" HorizontalAlignment="Right" Margin="0,0,10,20" VerticalAlignment="Bottom" Width="150">
+            <StackPanel>
+                <Label x:Name="l_d" Content="detection"/>
+                <Label x:Name="l_gt" Content="ground truth"/>
+            </StackPanel>
+        </GroupBox>
+
+    </Grid>
+</Window>

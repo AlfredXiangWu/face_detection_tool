@@ -89,7 +89,7 @@ namespace FaceDetectionTool_WPF
                 count = img_path.Length;
             count = count - 1;
             ShowImg();
-        }      
+        }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
@@ -114,6 +114,15 @@ namespace FaceDetectionTool_WPF
         private void Window_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void Info_Click(object sender, RoutedEventArgs e)
+        {
+            var info_form = new Info();
+            info_form.Show();
+            info_form.GetPath(img_path[count]);
+            info_form.ImageInfo(img.Width, img.Height);
+            info_form.DetectionInfo(0, 0);
         }
     }
 }
