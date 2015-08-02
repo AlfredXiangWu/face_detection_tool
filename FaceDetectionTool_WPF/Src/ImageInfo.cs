@@ -4,11 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FaceDetectionTool_WPF.Src
+namespace FaceDetectionTool_WPF
 {
-    internal class ImageInfo
+    public class ImageInfo
     {
         public string Path { get; set; }
 
+        public string PathGt { get; set; }
+
+        public List<double[]> GtList { get; set; }
+
+        public string PathFr { get; set; }
+
+        public List<double[]> FrList { get; set; }
     }
 }

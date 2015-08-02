@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using static FaceDetectionTool_WPF.Properties.Settings;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace FaceDetectionTool_WPF
 {
@@ -36,68 +37,56 @@ namespace FaceDetectionTool_WPF
         /// Get number of image
         /// </summary>
         /// <returns></returns>
-        public int GetNum()
-        {
-            int num = 0;
-            using (var sr = new StreamReader(FrmList, Encoding.Default))
-                int.TryParse(sr.ReadLine(), out num);
-            return num;
-        }
 
-        /// <summary>
-        /// Get each file path.
-        /// </summary>
-        /// <returns> </returns>
-        public string[] GetPath(TypeE s)
+        public List<ImageInfo> GetImageInfoList()
         {
-            try
+            var txt = File.ReadAllLines(FrmList, Encoding.Default);
+            var count = int.Parse(txt[0]);
+            var list = new List<ImageInfo>(count);
+            foreach (var line in txt.Skip(1).Take(count))
             {
-                int num = GetNum();
-                if (num == 0)
-                    return null;
-                var lines = File.ReadAllLines(FrmList, Encoding.Default).Skip(1).Take(num);
-                Func<string, string> func = l => l;
-                switch (s)
-                {
-                    case TypeE.image: func = l => Path.Combine(FrmImagePath, l); break;
-                    case TypeE.detection: func = l => Path.Combine(FrmDetectionFrPath, l.Split('.')[0] + ".jpg.fr"); break;
-                    case TypeE.gt: func = l => Path.Combine(FrmGtFrPath, l.Split('.')[0] + ".fr"); break;
-                }
-                return lines.Select(func).ToArray();
+                var imageInfo = new ImageInfo();
+                imageInfo.Path = Path.Combine(FrmImagePath, line);
+                var name = line.Split('.')[0];
+                imageInfo.PathFr = Path.Combine(FrmDetectionFrPath, name + ".jpg.fr");
+                imageInfo.PathGt = Path.Combine(FrmGtFrPath, name + ".fr");
+
+                imageInfo.FrList = GetInfoList(imageInfo.PathFr);
+                imageInfo.GtList = GetInfoList(imageInfo.PathGt);
+
+                list.Add(imageInfo);
             }
-            catch
-            { return null; }
+            return list;
         }
 
-        /// <summary>
-        /// Draw the bounding box on the detection image
-        /// </summary>
-        /// <param name="image">The detection image</param>
-        /// <param name="fr">Bounding box(rectangle or ellipse)</param>
-        /// <param name="color">Color of bounding box</param>
-        /// <param name="type">FR type("detection" or "gt")</param>
-        /// <returns>The probability of face bounding box</returns>
-        public double[] showFR(Image image, string fr, Brush color, TypeE type)
+        private List<double[]> GetInfoList(string path)
+        {
+            var txt = File.ReadAllLines(path);
+            var count = int.Parse(txt[0]);
+            var lines = txt.Skip(1).Take(count);
+            return lines.Select(l =>
+                l.Replace(' ', '\t').Split('\t')
+                .Select(s => double.Parse(s)).ToArray()).ToList();
+        }
+
+        public double[] showFR(Image image, ImageInfo imageInfo, Brush color, TypeE type)
         {
             var img = (BitmapSource)image.Source;
             var drawingVisual = new DrawingVisual();
             var drawingContext = drawingVisual.RenderOpen();
             drawingContext.DrawImage(image.Source, new Rect(0, 0, img.Width, img.Height));
             var pen = new Pen(color, 4.0f);
-
-            var lines = File.ReadAllLines(fr);
-            int num_face = int.Parse(lines.First());
-            var strsList = lines.Skip(1).Take(num_face).Select(l => l.Replace(' ', '\t').Split('\t')).ToArray();
             try
             {
                 double xtl, ytl, width, height;
-                double[] prob = new double[num_face];
+                double[] prob = null;
 
                 if (type == TypeE.detection)
                 {
-                    for (int i = 0; i < num_face; i++)
+                    prob = new double[imageInfo.FrList.Count];
+                    for (int i = 0; i < prob.Length; i++)
                     {
-                        var s = strsList[i].ToDouble();
+                        var s = imageInfo.FrList[i];
                         xtl = s[0];
                         ytl = s[1];
                         width = s[2] - xtl + 1;
@@ -109,9 +98,10 @@ namespace FaceDetectionTool_WPF
                 }
                 else if (type == TypeE.gt)
                 {
-                    for (int i = 0; i < num_face; i++)
+                    prob = new double[imageInfo.GtList.Count];
+                    for (int i = 0; i < prob.Length; i++)
                     {
-                        var s = strsList[i].ToDouble();
+                        var s = imageInfo.GtList[i];
                         if (s.Length == 5)
                         {
                             width = s[0];

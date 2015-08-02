@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FaceDetectionTool_WPF"
         mc:Ignorable="d"
-        Title="Info" Height="224.62" Width="360.606">
+        Title="Info" Height="224.62" Width="360.606" Loaded="Window_Loaded">
     <Grid>
         <Label x:Name="label" Content="Image Path" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tb_Path" Height="42" Margin="10,40,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>

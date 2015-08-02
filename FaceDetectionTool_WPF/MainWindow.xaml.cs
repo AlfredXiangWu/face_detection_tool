@@ -26,11 +26,8 @@ namespace FaceDetectionTool_WPF
         }
 
         IO io = new IO();
-        string[] img_path;
-        string[] detection_fr_path;
-        string[] gt_fr_path;
-        int count = 0;
-        int num_image = 0;
+        private List<ImageInfo> imageInfoList;
+        private int index = 0;
         BitmapImage img;
 
         private void New_Click(object sender, RoutedEventArgs e)
@@ -43,19 +40,15 @@ namespace FaceDetectionTool_WPF
 
                 //get path
                 io = s.IO;
-                img_path = io.GetPath(TypeE.image);
-                detection_fr_path = io.GetPath(TypeE.detection);
-                gt_fr_path = io.GetPath(TypeE.gt);
-                num_image = io.GetNum();
-
+                imageInfoList = io.GetImageInfoList();
                 // image
-                img = new BitmapImage(new Uri(img_path[count]));
+                img = new BitmapImage(new Uri(imageInfoList[index].Path));
                 image.Source = img;
 
                 // show detection result
-                io.showFR(image, detection_fr_path[count], Brushes.Blue, TypeE.detection);
+                io.showFR(image, imageInfoList[index], Brushes.Blue, TypeE.detection);
                 // show ground truth
-                io.showFR(image, gt_fr_path[count], Brushes.Red, TypeE.gt);
+                io.showFR(image, imageInfoList[index], Brushes.Red, TypeE.gt);
 
                 this.Activate();
             };
@@ -85,30 +78,30 @@ namespace FaceDetectionTool_WPF
 
         private void btnLast_Click(object sender, RoutedEventArgs e)
         {
-            if (count == 0)
-                count = img_path.Length;
-            count = count - 1;
+            if (index == 0)
+                index = imageInfoList.Count;
+            index = index - 1;
             ShowImg();
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            if (count == img_path.Length - 1)
-                count = -1;
-            count = count + 1;
+            if (index == imageInfoList.Count - 1)
+                index = -1;
+            index = index + 1;
             ShowImg();
         }
 
         private void ShowImg()
         {
-            img = new BitmapImage(new Uri(img_path[count]));
+            img = new BitmapImage(new Uri(imageInfoList[index].Path));
             image.Source = null;
             image.Source = img;
 
             // show detection result
-            io.showFR(image, detection_fr_path[count], Brushes.Blue, TypeE.detection);
+            io.showFR(image, imageInfoList[index], Brushes.Blue, TypeE.detection);
             // show ground truth
-            io.showFR(image, gt_fr_path[count], Brushes.Red, TypeE.gt);
+            io.showFR(image, imageInfoList[index], Brushes.Red, TypeE.gt);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -118,11 +111,9 @@ namespace FaceDetectionTool_WPF
 
         private void Info_Click(object sender, RoutedEventArgs e)
         {
-            var info_form = new Info();
-            info_form.Show();
-            info_form.GetPath(img_path[count]);
+            var info_form = new Info(imageInfoList[index]);
             info_form.ImageInfo(img.Width, img.Height);
-            info_form.DetectionInfo(0, 0);
+            info_form.Show();
         }
     }
 }

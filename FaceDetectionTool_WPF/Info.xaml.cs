@@ -19,15 +19,13 @@ namespace FaceDetectionTool_WPF
     /// </summary>
     public partial class Info : Window
     {
-        public Info()
+        public Info(ImageInfo imageInfo)
         {
             InitializeComponent();
+            this.imageInfo = imageInfo;
         }
 
-        internal void GetPath(string path)
-        {
-            tb_Path.Text = path;
-        }
+        private ImageInfo imageInfo;
 
         internal void ImageInfo(double width, double height)
         {
@@ -35,10 +33,11 @@ namespace FaceDetectionTool_WPF
             l_Height.Content = height;
         }
 
-        internal void DetectionInfo(int detection, int gt)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            l_d.Content = detection;
-            l_gt.Content = gt;
+            tb_Path.Text = imageInfo.Path;
+            l_d.Content = imageInfo.FrList.Count;
+            l_gt.Content = imageInfo.GtList.Count;
         }
     }
 }
