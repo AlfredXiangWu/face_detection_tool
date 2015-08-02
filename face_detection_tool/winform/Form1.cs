@@ -39,6 +39,7 @@ namespace face_detection_tool
             Configuration new_configuration = (Configuration)sender;
             button1.Enabled = true;
             button2.Enabled = true;
+            infoToolStripMenuItem.Enabled = true;
 
             //get path
             io.frmImagePath = new_configuration.frmImagePath;
@@ -130,5 +131,16 @@ namespace face_detection_tool
                 return;
             }
         }
+
+        private void infoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            info info_form = new info();
+            info_form.Show();
+            info_form.getPath(img_path[count]);
+            info_form.imageInfo(img.Width, img.Height);
+            //info_form.detectionInfo()
+
+        }
+
     }
 }
