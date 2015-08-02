@@ -68,45 +68,51 @@ namespace face_detection_tool
         public string[] getPath(string s)
         {
             int num = 0;
-            num = this.getNum();
-            StreamReader sr = new StreamReader(_list_, Encoding.Default);
-            sr.ReadLine();          // skip num
-            if (0 == num)
+            try
+            {
+                num = this.getNum();
+                StreamReader sr = new StreamReader(_list_, Encoding.Default);
+                sr.ReadLine();          // skip num
+                if (0 == num)
+                {
+                    return null;
+                }
+                string[] path = new string[num];
+                switch (s)
+                {
+                    case "image":
+                        {
+                            for (int i = 0; i < num; i++)
+                            {
+                                path[i] = _image_path_ + "\\" + sr.ReadLine().ToString();
+                            }
+                            break;
+                        }
+                    case "detection":
+                        {
+                            for (int i = 0; i < num; i++)
+                            {
+                                string[] temp = sr.ReadLine().ToString().Split('.');
+                                path[i] = _detection_fr_path_ + "\\" + temp[0] + ".fr";
+                            }
+                            break;
+                        }
+                    case "gt":
+                        {
+                            for (int i = 0; i < num; i++)
+                            {
+                                string[] temp = sr.ReadLine().ToString().Split('.');
+                                path[i] = _gt_fr_path_ + "\\" + temp[0] + ".fr";
+                            }
+                            break;
+                        }
+                }
+                return path;
+            }
+            catch
             {
                 return null;
             }
-            string[] path = new string[num];
-            switch (s)
-            {
-                case "image":
-                    {
-                        for (int i = 0; i < num; i++)
-                        {
-                            path[i] = _image_path_ + "\\" + sr.ReadLine().ToString();
-                        }
-                        break;
-                    }
-                case "detection":
-                    {
-                        for (int i = 0; i < num; i++)
-                        {
-                            string[] temp = sr.ReadLine().ToString().Split('.');
-                            path[i] = _detection_fr_path_ + "\\" + temp[0] + ".fr";
-                        }
-                        break;
-                    }
-                case "gt":
-                    {
-                        for (int i = 0; i < num; i++)
-                        {
-                            string[] temp = sr.ReadLine().ToString().Split('.');
-                            path[i] = _gt_fr_path_ + "\\" + temp[0] + ".fr";
-                        }
-                        break;
-                    }  
-            }
-            
-            return path;
         }
 
         /// <summary>
@@ -119,32 +125,37 @@ namespace face_detection_tool
         {
             int num_face = 0;
             StreamReader sr_detect_fr = new StreamReader(fr);
-            num_face = Convert.ToInt32(sr_detect_fr.ReadLine().ToString());
-            int xtl, ytl, xbr, ybr;
-            double[] prob = new double[num_face];
-            string str;
-            for (int i = 0; i < num_face; i++)
+            try
             {
-                str = sr_detect_fr.ReadLine().ToString();
-                str = str.Replace(' ', '\t');
-                string[] s = str.Split('\t');
-                xtl = Convert.ToInt32(s[0]);
-                ytl = Convert.ToInt32(s[1]);
-                xbr = Convert.ToInt32(s[2]);
-                ybr = Convert.ToInt32(s[3]);
-                if (s.Length ==5)
-                    prob[i] = Convert.ToDouble(s[4]);
-                else 
-                    prob[i] = 1;
+                num_face = Convert.ToInt32(sr_detect_fr.ReadLine().ToString());
+                float xtl, ytl, xbr, ybr;
+                double[] prob = new double[num_face];
+                string str;
+                for (int i = 0; i < num_face; i++)
+                {
+                    str = sr_detect_fr.ReadLine().ToString();
+                    str = str.Replace(' ', '\t');
+                    string[] s = str.Split('\t');
+                    xtl = Convert.ToSingle(s[0]);
+                    ytl = Convert.ToSingle(s[1]);
+                    xbr = Convert.ToSingle(s[2]);
+                    ybr = Convert.ToSingle(s[3]);
+                    if (s.Length == 5)
+                        prob[i] = Convert.ToDouble(s[4]);
+                    else
+                        prob[i] = 1;
 
-                Graphics g = Graphics.FromImage(img);
-                Pen pen = new Pen(color, 4.0f);
-                g.DrawRectangle(pen, new Rectangle(xtl, ytl, xbr - xtl + 1, ybr - ytl + 1));
-                g.Dispose();
+                    Graphics g = Graphics.FromImage(img);
+                    Pen pen = new Pen(color, 4.0f);
+                    g.DrawRectangle(pen, xtl, ytl, xbr - xtl + 1, ybr - ytl + 1);                  
+                    g.Dispose();
+                }
+                return prob;
             }
-            return prob;
+            catch
+            {
+                return null;
+            }  
         }
-
-
     }
 }

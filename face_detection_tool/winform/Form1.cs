@@ -23,6 +23,7 @@ namespace face_detection_tool
         public Form1()
         {
             InitializeComponent();
+            KeyDown += new KeyEventHandler(Form1_KeyDown);
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -62,6 +63,11 @@ namespace face_detection_tool
              new_configuration.Hide();
         }
 
+        /// <summary>
+        /// Next button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             if (count == 0)
@@ -81,6 +87,11 @@ namespace face_detection_tool
             io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red);
         }
 
+        /// <summary>
+        /// Last button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
             if (count == io.getNum() - 1)
@@ -99,5 +110,25 @@ namespace face_detection_tool
             io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red);
         }
 
+        /// <summary>
+        /// shortcut keys configuration
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            // process Last button
+            if (e.KeyCode.Equals(Keys.A))
+            {
+                button1.PerformClick();
+                return;
+            }
+            // process Net button
+            if (e.KeyCode.Equals(Keys.D))
+            {
+                button2.PerformClick();
+                return;
+            }
+        }
     }
 }
