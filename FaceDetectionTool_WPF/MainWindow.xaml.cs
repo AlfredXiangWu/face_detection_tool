@@ -36,7 +36,6 @@ namespace FaceDetectionTool_WPF
         private void New_Click(object sender, RoutedEventArgs e)
         {
             var new_configuration = new Configuration();
-            new_configuration.Show();
             new_configuration.Accept = (s) =>
             {
                 btnLast.IsEnabled = true;
@@ -60,7 +59,7 @@ namespace FaceDetectionTool_WPF
 
                 this.Activate();
             };
-
+            new_configuration.Show();
         }
 
         /// <summary>
@@ -90,6 +89,14 @@ namespace FaceDetectionTool_WPF
                 count = img_path.Length;
             count = count - 1;
             ShowImg();
+        }      
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            if (count == img_path.Length - 1)
+                count = -1;
+            count = count + 1;
+            ShowImg();
         }
 
         private void ShowImg()
@@ -102,14 +109,6 @@ namespace FaceDetectionTool_WPF
             io.showFR(image, detection_fr_path[count], Brushes.Blue, TypeE.detection);
             // show ground truth
             io.showFR(image, gt_fr_path[count], Brushes.Red, TypeE.gt);
-        }
-
-        private void btnNext_Click(object sender, RoutedEventArgs e)
-        {
-            if (count == img_path.Length - 1)
-                count = -1;
-            count = count + 1;
-            ShowImg();
         }
 
         private void Window_Closed(object sender, EventArgs e)

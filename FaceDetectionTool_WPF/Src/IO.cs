@@ -83,6 +83,7 @@ namespace FaceDetectionTool_WPF
             var drawingVisual = new DrawingVisual();
             var drawingContext = drawingVisual.RenderOpen();
             drawingContext.DrawImage(image.Source, new Rect(0, 0, img.Width, img.Height));
+            var pen = new Pen(color, 4.0f);
 
             var lines = File.ReadAllLines(fr);
             int num_face = int.Parse(lines.First());
@@ -96,14 +97,13 @@ namespace FaceDetectionTool_WPF
                 {
                     for (int i = 0; i < num_face; i++)
                     {
-                        var s = strsList[i];
-                        xtl = Convert.ToDouble(s[0]);
-                        ytl = Convert.ToDouble(s[1]);
-                        width = Convert.ToDouble(s[2]) - xtl + 1;
-                        height = Convert.ToDouble(s[3]) - ytl + 1;
-                        prob[i] = Convert.ToDouble(s[4]);
+                        var s = strsList[i].ToDouble();
+                        xtl = s[0];
+                        ytl = s[1];
+                        width = s[2] - xtl + 1;
+                        height = s[3] - ytl + 1;
+                        prob[i] = s[4];
 
-                        var pen = new Pen(color, 4.0f);
                         drawingContext.DrawRectangle(null, pen, new Rect(xtl, ytl, width, height));
                     }
                 }
@@ -111,31 +111,29 @@ namespace FaceDetectionTool_WPF
                 {
                     for (int i = 0; i < num_face; i++)
                     {
-                        var s = strsList[i];
+                        var s = strsList[i].ToDouble();
                         if (s.Length == 5)
                         {
-                            width = Convert.ToDouble(s[0]);
-                            height = Convert.ToDouble(s[1]);
-                            xtl = Convert.ToDouble(s[3]);
-                            ytl = Convert.ToDouble(s[4]);
-                            var angle = Convert.ToDouble(Convert.ToDouble(s[2]) / Math.PI * 180);
+                            width = s[0];
+                            height = s[1];
+                            var angle = s[2] / Math.PI * 180;
+                            xtl = s[3];
+                            ytl = s[4];
                             prob[i] = 1;
 
                             var rt = new RotateTransform(angle, xtl, ytl);
                             drawingContext.PushTransform(rt);
-                            Pen pen = new Pen(color, 4.0f);
                             drawingContext.DrawEllipse(null, pen, new Point(xtl, ytl), width, height);
                             drawingContext.Pop();
                         }
                         else
                         {
-                            xtl = Convert.ToDouble(s[0]);
-                            ytl = Convert.ToDouble(s[1]);
-                            width = Convert.ToDouble(s[2]) - xtl + 1;
-                            height = Convert.ToDouble(s[3]) - ytl + 1;
+                            xtl = s[0];
+                            ytl = s[1];
+                            width = s[2] - xtl + 1;
+                            height = s[3] - ytl + 1;
                             prob[i] = 1;
 
-                            Pen pen = new Pen(color, 4.0f);
                             drawingContext.DrawRectangle(null, pen, new Rect(xtl, ytl, width, height));
                         }
                     }
@@ -152,4 +150,10 @@ namespace FaceDetectionTool_WPF
     }
 
     public enum TypeE { image, detection, gt }
+
+    public static class Extend
+    {
+        public static double[] ToDouble(this string[] strs) =>
+             strs.Select(s => double.Parse(s)).ToArray();
+    }
 }
