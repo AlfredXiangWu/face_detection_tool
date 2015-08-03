@@ -89,10 +89,15 @@ namespace FaceDetectionTool_WPF
         {
             var ii = imageInfoList[index];
 
-            var imgD = ii.Drawing(Brushes.Blue, TypeE.Detection);
-            var imgDG = ii.Drawing(Brushes.Red, TypeE.Gt, imgD);
-            image.Source = img = imgDG;
-
+            //var imgD = ii.Drawing(Brushes.Blue, TypeE.Detection);
+            //var imgDG = ii.Drawing(Brushes.Red, TypeE.Gt, imgD);
+            canvas.Children.Clear();
+            var image = new Image() { Source = ii.Bitmap };
+            canvas.Width = image.Width;
+            canvas.Height = image.Height;
+            canvas.Children.Add(image);
+            ii.AddShapes(Brushes.Blue, TypeE.Detection, canvas);
+            ii.AddShapes(Brushes.Red, TypeE.Gt, canvas);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -103,8 +108,24 @@ namespace FaceDetectionTool_WPF
         private void Info_Click(object sender, RoutedEventArgs e)
         {
             var info_form = new Info(imageInfoList[index]);
-            info_form.ImageInfo(img.Width, img.Height);
             info_form.Show();
+        }
+
+        private void canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var str = "";
+            var p = e.GetPosition(sender as UIElement);
+            VisualTreeHelper.HitTest(this, null, f =>
+            {
+                if (f.VisualHit is Shape)
+                {
+                    var shape = f.VisualHit as Shape;
+                    var area = shape.RenderedGeometry.GetArea();
+                    str += $"{shape}:{area}\n";
+                }
+                return HitTestResultBehavior.Continue;
+            }, new PointHitTestParameters(p));
+            textBox.Text = str;
         }
     }
 }

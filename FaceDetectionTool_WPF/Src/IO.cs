@@ -47,26 +47,13 @@ namespace FaceDetectionTool_WPF
             {
                 var imageInfo = new ImageInfo();
                 imageInfo.Path = Path.Combine(FrmImagePath, line);
-                var name = line.Split('.')[0];
+                var name = line.Substring(0, line.LastIndexOf('.'));
                 imageInfo.PathFr = Path.Combine(FrmDetectionFrPath, name + ".jpg.fr");
                 imageInfo.PathGt = Path.Combine(FrmGtFrPath, name + ".fr");
-
-                imageInfo.FrList = GetInfoList(imageInfo.PathFr);
-                imageInfo.GtList = GetInfoList(imageInfo.PathGt);
-
                 list.Add(imageInfo);
             }
             return list;
         }
 
-        private List<double[]> GetInfoList(string path)
-        {
-            var txt = File.ReadAllLines(path);
-            var count = int.Parse(txt[0]);
-            var lines = txt.Skip(1).Take(count);
-            return lines.Select(l =>
-                l.Replace(' ', '\t').Split('\t')
-                .Select(s => double.Parse(s)).ToArray()).ToList();
-        }
     }
 }

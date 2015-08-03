@@ -27,17 +27,13 @@ namespace FaceDetectionTool_WPF
 
         private ImageInfo imageInfo;
 
-        internal void ImageInfo(double width, double height)
-        {
-            l_Width.Content = width;
-            l_Height.Content = height;
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             tb_Path.Text = imageInfo.Path;
             l_d.Content = imageInfo.FrList.Count;
             l_gt.Content = imageInfo.GtList.Count;
+            l_Width.Content = imageInfo.Bitmap.Width;
+            l_Height.Content = imageInfo.Bitmap.Height;
         }
     }
 }
