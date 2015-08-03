@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FDialogResult = System.Windows.Forms.DialogResult;
 using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
+using static FaceDetectionTool_WPF.Properties.Settings;
 
 namespace FaceDetectionTool_WPF
 {
@@ -37,6 +38,7 @@ namespace FaceDetectionTool_WPF
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
+            SaveConfig();
             if (Accept != null)
                 Accept(this);
         }
@@ -44,6 +46,15 @@ namespace FaceDetectionTool_WPF
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void SaveConfig()
+        {
+            Default.ImagePath = IO.FrmImagePath;
+            Default.GtFrPath = IO.FrmGtFrPath;
+            Default.List = IO.FrmList;
+            Default.DetectionFrPath = IO.FrmDetectionFrPath;
+            Default.Save();
         }
     }
 }

@@ -30,6 +30,7 @@ namespace FaceDetectionTool_WPF
         public BitmapSource Bitmap => bitmap = (bitmap ?? new BitmapImage(new Uri(Path)));
 
         public List<Rectangle> Rectangles { get; set; } = new List<Rectangle>();
+
         public List<Ellipse> Ellipses { get; set; } = new List<Ellipse>();
 
         public BitmapSource Drawing(Brush color, TypeE type, BitmapSource img = null, double[] prob = null)
@@ -104,14 +105,13 @@ namespace FaceDetectionTool_WPF
             { return null; }
         }
 
-        public double[] AddShapes(Brush color, TypeE type, Canvas canvas)
+        public double[] AddShapes(Brush color, TypeE type)
         {
             try
-            {                
+            {
                 var opacity = 0.5;
                 double[] prob = null;
                 double xtl, ytl, width, height;
-                var children = canvas.Children;
                 switch (type)
                 {
                     case TypeE.Detection:
@@ -133,11 +133,9 @@ namespace FaceDetectionTool_WPF
                                     Fill = color,
                                     Opacity = opacity,
                                 };
-                                children.Add(rt);
                                 Rectangles.Add(rt);
                                 Canvas.SetTop(rt, ytl);
                                 Canvas.SetLeft(rt, xtl);
-                                // drawingContext.DrawRectangle(null, pen, new Rect(xtl, ytl, width, height));
                             }
                         }
                         break;
@@ -156,17 +154,16 @@ namespace FaceDetectionTool_WPF
                                     ytl = s[4];
                                     prob[i] = 1;
 
-                                    var t = new RotateTransform(angle, width, height);
+                                    var rt = new RotateTransform(angle, width, height);
                                     var el = new Ellipse()
                                     {
                                         Width = width * 2,
                                         Height = height * 2,
                                         Fill = color,
-                                        RenderTransform = t,
+                                        RenderTransform = rt,
                                         Opacity = opacity,
-                                        Tag = angle,
+                                        Tag = rt,
                                     };
-                                    children.Add(el);
                                     Ellipses.Add(el);
                                     Canvas.SetTop(el, ytl - height);
                                     Canvas.SetLeft(el, xtl - width);
@@ -186,7 +183,6 @@ namespace FaceDetectionTool_WPF
                                         Fill = color,
                                         Opacity = opacity,
                                     };
-                                    children.Add(rt);
                                     Rectangles.Add(rt);
                                     Canvas.SetTop(rt, ytl);
                                     Canvas.SetLeft(rt, xtl);
@@ -199,6 +195,12 @@ namespace FaceDetectionTool_WPF
             }
             catch
             { return null; }
+        }
+
+        public void ClearShapes()
+        {
+            Rectangles.Clear();
+            Ellipses.Clear();
         }
 
         private static List<double[]> GetInfoList(string path)

@@ -28,7 +28,6 @@ namespace FaceDetectionTool_WPF
         IO io = new IO();
         private List<ImageInfo> imageInfoList;
         private int index = 0;
-        BitmapSource img;
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
@@ -38,10 +37,8 @@ namespace FaceDetectionTool_WPF
                 btnLast.IsEnabled = true;
                 btnNext.IsEnabled = true;
 
-                //get path
                 io = s.IO;
                 imageInfoList = io.GetImageInfoList();
-                // image
                 ShowImg();
                 this.Activate();
             };
@@ -55,13 +52,11 @@ namespace FaceDetectionTool_WPF
         /// <param name="e"></param>
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            // process Last button
             if (e.Key == Key.A)
             {
                 btnLast_Click(btnLast, null);
                 return;
             }
-            // process Net button
             if (e.Key == Key.D)
             {
                 btnNext_Click(btnNext, null);
@@ -73,7 +68,7 @@ namespace FaceDetectionTool_WPF
         {
             if (index == 0)
                 index = imageInfoList.Count;
-            index = index - 1;
+            index--;
             ShowImg();
         }
 
@@ -81,7 +76,7 @@ namespace FaceDetectionTool_WPF
         {
             if (index == imageInfoList.Count - 1)
                 index = -1;
-            index = index + 1;
+            index++;
             ShowImg();
         }
 
@@ -89,17 +84,21 @@ namespace FaceDetectionTool_WPF
         {
             var ii = imageInfoList[index];
 
-            //var imgD = ii.Drawing(Brushes.Blue, TypeE.Detection);
-            //var imgDG = ii.Drawing(Brushes.Red, TypeE.Gt, imgD);
             canvas.Children.Clear();
             var image = new Image() { Source = ii.Bitmap };
             canvas.Width = image.Width;
             canvas.Height = image.Height;
             canvas.Children.Add(image);
-            ii.Rectangles.Clear();
-            ii.Ellipses.Clear();
-            ii.AddShapes(Brushes.Blue, TypeE.Detection, canvas);
-            ii.AddShapes(Brushes.Red, TypeE.Gt, canvas);
+
+            if (ii.Rectangles.Count + ii.Ellipses.Count == 0)
+            {
+                ii.AddShapes(Brushes.Blue, TypeE.Detection);
+                ii.AddShapes(Brushes.Red, TypeE.Gt);
+            }
+            foreach (var item in ii.Rectangles)
+                canvas.Children.Add(item);
+            foreach (var item in ii.Ellipses)
+                canvas.Children.Add(item);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -149,16 +148,16 @@ namespace FaceDetectionTool_WPF
                 var y2 = Canvas.GetTop(el);
                 var geo2 = el.RenderedGeometry;
                 var group = new TransformGroup();
-                group.Children.Add(new RotateTransform((double)el.Tag, el.Width / 2, el.Height / 2));
+                group.Children.Add((RotateTransform)el.Tag);
                 group.Children.Add(new TranslateTransform(x2, y2));
                 geo2.Transform = group;
 
                 var ci = Geometry.Combine(geo1, geo2, GeometryCombineMode.Intersect, null);
                 var cu = Geometry.Combine(geo1, geo2, GeometryCombineMode.Union, null);
-                sb.AppendLine($"交集面积：\n{ci.GetArea()}\n并集面积：\n{cu.GetArea()}").AppendLine();
-           }
+                sb.AppendLine($"交集面积：\n{ci.GetArea()}\n并集面积：\n{cu.GetArea()}\n");
+            }
 
-            textBox.Text = sb.ToString();
+            tb_Result.Text = sb.ToString();
         }
     }
 }
