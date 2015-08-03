@@ -28,7 +28,7 @@ namespace FaceDetectionTool_WPF
         IO io = new IO();
         private List<ImageInfo> imageInfoList;
         private int index = 0;
-        BitmapImage img;
+        BitmapSource img;
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
@@ -42,14 +42,7 @@ namespace FaceDetectionTool_WPF
                 io = s.IO;
                 imageInfoList = io.GetImageInfoList();
                 // image
-                img = new BitmapImage(new Uri(imageInfoList[index].Path));
-                image.Source = img;
-
-                // show detection result
-                io.showFR(image, imageInfoList[index], Brushes.Blue, TypeE.detection);
-                // show ground truth
-                io.showFR(image, imageInfoList[index], Brushes.Red, TypeE.gt);
-
+                ShowImg();
                 this.Activate();
             };
             new_configuration.Show();
@@ -94,14 +87,12 @@ namespace FaceDetectionTool_WPF
 
         private void ShowImg()
         {
-            img = new BitmapImage(new Uri(imageInfoList[index].Path));
-            image.Source = null;
-            image.Source = img;
+            var ii = imageInfoList[index];
 
-            // show detection result
-            io.showFR(image, imageInfoList[index], Brushes.Blue, TypeE.detection);
-            // show ground truth
-            io.showFR(image, imageInfoList[index], Brushes.Red, TypeE.gt);
+            var imgD = ii.Drawing(Brushes.Blue, TypeE.Detection);
+            var imgDG = ii.Drawing(Brushes.Red, TypeE.Gt, imgD);
+            image.Source = img = imgDG;
+
         }
 
         private void Window_Closed(object sender, EventArgs e)
