@@ -12,13 +12,10 @@ namespace face_detection_tool
 {
     public partial class Form1 : Form
     {
-        IO io = new IO();
-        string[] img_path;
-        string[] detection_fr_path;
-        string[] gt_fr_path;
-        int count = 0;
-        int num_image = 0;
-        Bitmap img;
+        private IO io = new IO();
+        private List<ImageInfo> image_info_list;
+        private int index = 0;
+        private Bitmap img;
 
         public Form1()
         {
@@ -26,11 +23,28 @@ namespace face_detection_tool
             KeyDown += new KeyEventHandler(Form1_KeyDown);
         }
 
+        /// <summary>
+        /// New Configuration
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Configuration new_configuration = new Configuration();
             new_configuration.Show();
             new_configuration.accept += new EventHandler(new_configuration_accept);
+        }
+
+        /// <summary>
+        /// Show image in picturebox1
+        /// </summary>
+        private void showImage()
+        {
+            img = new Bitmap(image_info_list[index].ImgPath);
+            pictureBox1.Image = img;
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+
+            io.showFR(pictureBox1.Image, image_info_list[index]);
         }
 
 
@@ -41,25 +55,10 @@ namespace face_detection_tool
             button2.Enabled = true;
             infoToolStripMenuItem.Enabled = true;
 
-            //get path
-            io.frmImagePath = new_configuration.frmImagePath;
-            io.frmList = new_configuration.frmList;
-            io.frmDetectionFrPath = new_configuration.frmDetectionFrPath;
-            io.frmGtFrPath = new_configuration.frmGtFrPath;
-            img_path = io.getPath("image");
-            detection_fr_path = io.getPath("detection");
-            gt_fr_path = io.getPath("gt");
-            num_image = io.getNum();
+            io = new_configuration.io;
+            image_info_list = io.getImageInfo();
 
-            // image
-            img = new Bitmap(img_path[count]);
-            pictureBox1.Image = img;
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-
-            // show detection result
-            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue, "detection");
-            // show ground truth
-            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red, "gt");
+            showImage();
 
              new_configuration.Hide();
         }
@@ -71,21 +70,13 @@ namespace face_detection_tool
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (count == 0)
+            if (index == 0)
             {
-                count = io.getNum();
+                index = image_info_list.Count;
             }
-            count = count - 1;
+            index = index - 1;
 
-            img = new Bitmap(img_path[count]);
-            pictureBox1.Image = null;
-            pictureBox1.Image = img;
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-
-            // show detection result
-            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue, "detection");
-            // show ground truth
-            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red, "gt");
+            showImage();
         }
 
         /// <summary>
@@ -95,20 +86,13 @@ namespace face_detection_tool
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            if (count == io.getNum() - 1)
+            if (index == image_info_list.Count - 1)
             {
-                count = -1;
+                index = -1;
             }
-            count = count + 1;
-            img = new Bitmap(img_path[count]);
-            pictureBox1.Image = null;
-            pictureBox1.Image = img;
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            index = index + 1;
 
-            // show detection result
-            io.showFR(pictureBox1.Image, detection_fr_path[count], Color.Blue, "detection");
-            // show ground truth
-            io.showFR(pictureBox1.Image, gt_fr_path[count], Color.Red, "gt");
+            showImage();
         }
 
         /// <summary>
@@ -132,15 +116,18 @@ namespace face_detection_tool
             }
         }
 
+        /// <summary>
+        /// detials of face detection image
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             info info_form = new info();
             info_form.Show();
-            info_form.getPath(img_path[count]);
+            info_form.getPath(image_info_list[index].ImgPath);
             info_form.imageInfo(img.Width, img.Height);
-            //info_form.detectionInfo()
-
+            info_form.detectionInfo(image_info_list[index].DetecFrList.Count, image_info_list[index].GtFrList.Count);
         }
-
     }
 }

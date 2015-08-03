@@ -11,45 +11,8 @@ namespace face_detection_tool
 {
     public partial class Configuration : Form
     {
-        /// <summary>
-        /// Image Path
-        /// </summary>
-        private string _image_path_;
-        public string frmImagePath
-        {
-            get {return _image_path_;}
-            set {_image_path_ = value;}
-        }
 
-        /// <summary>
-        /// List File 
-        /// </summary>
-        private string _list_;
-        public string frmList
-        {
-            get { return _list_; }
-            set { _list_ = value;}
-        }
-
-        /// <summary>
-        /// Detection FR Path
-        /// </summary>
-        private string _detection_fr_path_;
-        public string frmDetectionFrPath
-        {
-            get { return _detection_fr_path_; }
-            set { _detection_fr_path_ = value; }
-        }
-
-        /// <summary>
-        /// Ground Truth FR Path
-        /// </summary>
-        private string _gt_fr_path_;
-        public string frmGtFrPath
-        {
-            get { return _gt_fr_path_; }
-            set { _gt_fr_path_ = value; }
-        }
+        public IO io = new IO();
 
         public Configuration()
         {
@@ -100,10 +63,10 @@ namespace face_detection_tool
         /// </summary>
         private void button4_Click(object sender, EventArgs e)
         {
-            _image_path_ = textBox2.Text;
-            _list_ = textBox3.Text;
-            _detection_fr_path_ = textBox5.Text;
-            _gt_fr_path_ = textBox7.Text;
+            io.FrmImagePath = textBox2.Text;
+            io.FrmList = textBox3.Text;
+            io.FrmDetectionFrPath = textBox5.Text;
+            io.FrmGtFrPath = textBox7.Text;
 
             if (accept != null)
             {
@@ -127,6 +90,31 @@ namespace face_detection_tool
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 textBox7.Text = dialog.SelectedPath;
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.Text == "AFW")
+            {
+                this.textBox2.Text = "Z:\\User\\wuxiang\\data\\AFW\\testimages";
+                this.textBox3.Text = "Z:\\User\\wuxiang\\data\\AFW\\list_afw.txt";
+                this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\AFW";
+                this.textBox7.Text = "Z:\\User\\wuxiang\\data\\AFW\\gt";
+            }
+            else if (comboBox1.Text == "FDDB")
+            {
+                this.textBox2.Text = "Z:\\User\\wuxiang\\data\\FDDB\\originalPics";
+                this.textBox3.Text = "Z:\\User\\wuxiang\\data\\FDDB\\FDDB_list.txt";
+                this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\FDDB";
+                this.textBox7.Text = "Z:\\User\\wuxiang\\data\\FDDB\\gt";
+            }
+            else
+            {
+                this.textBox2.Text = "";
+                this.textBox3.Text = "";
+                this.textBox5.Text = "";
+                this.textBox7.Text = "";
             }
         }
 
