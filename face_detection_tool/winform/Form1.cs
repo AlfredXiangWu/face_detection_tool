@@ -46,7 +46,14 @@ namespace face_detection_tool
             pictureBox1.Image = img;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
-            io.showFR(pictureBox1.Image, image_info_list[index]);
+            try
+            {
+                io.showFR(pictureBox1.Image, image_info_list[index]);
+            }
+            catch
+            {
+                return;
+            }
         }
 
 
@@ -72,6 +79,9 @@ namespace face_detection_tool
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
+            image_info_list[index].DetectFrList.Clear();
+            image_info_list[index].GtFrList.Clear();
+
             if (index == 0)
             {
                 index = image_info_list.Count;
@@ -88,6 +98,9 @@ namespace face_detection_tool
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
+            image_info_list[index].DetectFrList.Clear();
+            image_info_list[index].GtFrList.Clear();
+
             if (index == image_info_list.Count - 1)
             {
                 index = -1;
@@ -137,11 +150,14 @@ namespace face_detection_tool
             info_form.imageInfo(img.Width, img.Height);
             info_form.detectionInfo(image_info_list[index].DetectFrList.Count, image_info_list[index].GtFrList.Count);
 
-            tp = eval.singleImageMatch(image_info_list[index]);
+            tp = eval.singleImageMatch(image_info_list[index], 0.5);
             fp = image_info_list[index].DetectFrList.Count - tp;
             info_form.evaluationInfo(tp, fp);
         }
 
+        private void printErrorLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

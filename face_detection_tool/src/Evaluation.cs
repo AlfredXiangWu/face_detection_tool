@@ -15,7 +15,7 @@ namespace face_detection_tool
         /// </summary>
         /// <param name="image_info"></param>
         /// <returns>Number of true positive samples</returns>
-        public int singleImageMatch(ImageInfo image_info)
+        public int singleImageMatch(ImageInfo image_info, double thr)
         {
             List<double[]> detect_face_fr = image_info.DetectFrList;
             List<double[]> gt_face_fr = image_info.GtFrList;
@@ -41,7 +41,7 @@ namespace face_detection_tool
                         idx = j;
                     }
                 }
-                if ((idx != -1) && (flag[idx] == false))
+                if ((idx != -1) && (flag[idx] == false) && (max_score > thr))
                 {
                     image_info.Scores[idx] = max_score;
                     flag[idx] = true;
