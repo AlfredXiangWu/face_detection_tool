@@ -115,9 +115,8 @@ namespace FaceDetectionTool_WPF
             info_win.Show();
         }
 
-        private async void Calc_Click(object sender, RoutedEventArgs e)
+        private void Calc_Click(object sender, RoutedEventArgs e)
         {
-            await Task.Run(() => System.Threading.Thread.Sleep(100));
             tb_Result.Text = string.Join("\n", imageInfoList[index].Matches.Select(m => m.iou));
         }
     }

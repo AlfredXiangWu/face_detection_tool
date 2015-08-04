@@ -72,6 +72,7 @@ namespace FaceDetectionTool_WPF
                                     Data = g_rt,
                                     Fill = color,
                                     Opacity = opacity,
+                                    Tag = g_rt,
                                 };
                                 Rectangles.Add(rt);
                             }
@@ -95,13 +96,14 @@ namespace FaceDetectionTool_WPF
                                         Center = new Point(xtl, ytl),
                                         RadiusX = width,
                                         RadiusY = height,
-                                        Transform = rt
+                                        Transform = rt,
                                     };
                                     var el = new ShapePath()
                                     {
                                         Data = g_el,
                                         Fill = color,
                                         Opacity = opacity,
+                                        Tag = g_el,
                                     };
                                     Ellipses.Add(el);
                                 }
@@ -118,6 +120,7 @@ namespace FaceDetectionTool_WPF
                                         Data = g_rt,
                                         Fill = color,
                                         Opacity = opacity,
+                                        Tag = g_rt,
                                     };
                                     Rectangles.Add(rt);
                                 }
@@ -143,8 +146,8 @@ namespace FaceDetectionTool_WPF
             {
                 foreach (var rt in Rectangles)
                 {
-                    var gr = rt.RenderedGeometry;
-                    var ge = el.RenderedGeometry;
+                    var gr = (RectangleGeometry)rt.Tag;
+                    var ge = (EllipseGeometry)el.Tag;
                     var gi = Geometry.Combine(gr, ge, GeometryCombineMode.Intersect, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
                     var gu = Geometry.Combine(gr, ge, GeometryCombineMode.Union, null, tolerance, toleranceType)
