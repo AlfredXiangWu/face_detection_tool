@@ -44,7 +44,7 @@ namespace face_detection_tool
                 var name = txt.ReadLine();
                 image_info.ImgPath = Path.Combine(FrmImagePath, name);
                 var tmp = name.Split('.')[0];
-                image_info.DetectFrPath = Path.Combine(FrmDetectionFrPath, tmp + ".fr");
+                image_info.DetectFrPath = Path.Combine(FrmDetectionFrPath, tmp + ".jpg.fr");
                 image_info.GtFrPath = Path.Combine(FrmGtFrPath, tmp + ".fr");
 
                 //image_info.DetecFrList = getFrList(image_info.DetectFrPath);
@@ -60,7 +60,7 @@ namespace face_detection_tool
         /// </summary>
         /// <param name="path">FR Path</param>
         /// <returns>List of FR</returns>
-        private List<double[]> getFrList(string path)
+        public List<double[]> getFrList(string path)
         {
             StreamReader txt = new StreamReader(path, Encoding.Default);
             int num = Convert.ToInt32(txt.ReadLine());
@@ -80,9 +80,9 @@ namespace face_detection_tool
         /// <param name="image_info">Image Information</param>
         public void showFR(Image image, ImageInfo image_info)
         {
-            image_info.DetecFrList = getFrList(image_info.DetectFrPath);
+            image_info.DetectFrList = getFrList(image_info.DetectFrPath);
             image_info.GtFrList = getFrList(image_info.GtFrPath);
-            int num_detect_face = image_info.DetecFrList.Count;
+            int num_detect_face = image_info.DetectFrList.Count;
             int num_gt_face = image_info.GtFrList.Count;
 
             double xtl, ytl, width, height;
@@ -90,7 +90,7 @@ namespace face_detection_tool
             // draw detection fr (rectangle)
             for (int i = 0; i < num_detect_face; i++)
             {
-                var s = image_info.DetecFrList[i];
+                var s = image_info.DetectFrList[i];
                 xtl = s[0];
                 ytl = s[1];
                 width = s[2] - xtl + 1;

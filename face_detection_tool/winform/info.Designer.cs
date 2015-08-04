@@ -36,6 +36,10 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -58,7 +62,8 @@
             this.textBox1.BackColor = System.Drawing.SystemColors.Window;
             this.textBox1.Location = new System.Drawing.Point(15, 38);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(381, 21);
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(491, 21);
             this.textBox1.TabIndex = 1;
             // 
             // label2
@@ -112,16 +117,56 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.textBox4);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.textBox7);
+            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.textBox5);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.textBox6);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Location = new System.Drawing.Point(196, 78);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 85);
+            this.groupBox2.Size = new System.Drawing.Size(310, 85);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Detection info";
+            // 
+            // textBox4
+            // 
+            this.textBox4.BackColor = System.Drawing.SystemColors.Menu;
+            this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox4.Location = new System.Drawing.Point(229, 58);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(66, 14);
+            this.textBox4.TabIndex = 13;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(192, 58);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(17, 12);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "FP";
+            // 
+            // textBox7
+            // 
+            this.textBox7.BackColor = System.Drawing.SystemColors.Menu;
+            this.textBox7.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox7.Location = new System.Drawing.Point(229, 29);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(66, 14);
+            this.textBox7.TabIndex = 12;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(192, 29);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(17, 12);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "TP";
             // 
             // textBox5
             // 
@@ -163,13 +208,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 172);
+            this.ClientSize = new System.Drawing.Size(515, 172);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
+            this.KeyPreview = true;
             this.Name = "info";
             this.Text = "info";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.info_KeyDown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -193,5 +240,9 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.Label label7;
     }
 }

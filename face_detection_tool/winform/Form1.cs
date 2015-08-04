@@ -14,8 +14,10 @@ namespace face_detection_tool
     {
         private IO io = new IO();
         private List<ImageInfo> image_info_list;
+        private Evaluation eval = new Evaluation();
         private int index = 0;
         private Bitmap img;
+
 
         public Form1()
         {
@@ -114,20 +116,32 @@ namespace face_detection_tool
                 button2.PerformClick();
                 return;
             }
+            if (e.KeyCode.Equals(Keys.I))
+            {
+                infoToolStripMenuItem.PerformClick();
+                return;
+            }
         }
 
         /// <summary>
-        /// detials of face detection image
+        /// details of face detection image
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             info info_form = new info();
+            int tp, fp;
             info_form.Show();
             info_form.getPath(image_info_list[index].ImgPath);
             info_form.imageInfo(img.Width, img.Height);
-            info_form.detectionInfo(image_info_list[index].DetecFrList.Count, image_info_list[index].GtFrList.Count);
+            info_form.detectionInfo(image_info_list[index].DetectFrList.Count, image_info_list[index].GtFrList.Count);
+
+            tp = eval.singleImageMatch(image_info_list[index]);
+            fp = image_info_list[index].DetectFrList.Count - tp;
+            info_form.evaluationInfo(tp, fp);
         }
+
+
     }
 }

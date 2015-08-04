@@ -29,8 +29,23 @@ namespace face_detection_tool
 
         public void detectionInfo(int detection, int gt)
         {
-            textBox5.Text = detection.ToString();
-            textBox6.Text = gt.ToString();
+            textBox6.Text = detection.ToString();
+            textBox5.Text = gt.ToString();
         }
+
+        public void evaluationInfo(int tp, int fp)
+        {
+            textBox7.Text = tp.ToString();
+            textBox4.Text = fp.ToString();
+        }
+
+        private void info_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode.Equals(Keys.Escape))
+            {
+                this.Close();
+            }
+        }
+
     }
 }

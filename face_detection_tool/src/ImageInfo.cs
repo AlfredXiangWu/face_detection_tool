@@ -20,7 +20,20 @@ namespace face_detection_tool
         /// <summary>
         /// Detection FR Result
         /// </summary>
-        public List<double[]> DetecFrList { get; set; }
+        public List<double[]> DetectFrList { get; set; }
+
+        /// <summary>
+        /// IoU Scores for Detection Results
+        /// </summary>
+        public double[] Scores { get; set; }
+        public void InitScores()
+        {
+            Scores = new double[DetectFrList.Count];
+            for (int i = 0; i < DetectFrList.Count; i++)
+            {
+                Scores[i] = 0;
+            }
+        }
 
         /// <summary>
         /// Ground Truth FR Path
