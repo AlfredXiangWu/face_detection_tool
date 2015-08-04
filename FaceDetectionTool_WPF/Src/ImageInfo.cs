@@ -34,14 +34,14 @@ namespace FaceDetectionTool_WPF
 
         public List<Shape> Ellipses { get; set; }
 
-        private List<double[]> areas;
-        public List<double[]> I_U_Areas
+        private List<ShapeMatch> macthes;
+        public List<ShapeMatch> Matches
         {
             get
             {
-                if (areas == null)
-                    areas = Get_I_U_Areas().ToList();
-                return areas;
+                if (macthes == null)
+                    macthes = GetMatches();
+                return macthes;
             }
         }
 
@@ -137,11 +137,11 @@ namespace FaceDetectionTool_WPF
             Ellipses?.Clear();
         }
 
-        public IEnumerable<double[]> Get_I_U_Areas(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative)
+        public IEnumerable<ShapeMatch> GetIUAreas(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative)
         {
-            foreach (var rt in Rectangles)
+            foreach (var el in Ellipses)
             {
-                foreach (var el in Ellipses)
+                foreach (var rt in Rectangles)
                 {
                     var gr = rt.RenderedGeometry;
                     var ge = el.RenderedGeometry;
@@ -149,9 +149,26 @@ namespace FaceDetectionTool_WPF
                         .GetArea(tolerance, toleranceType);
                     var gu = Geometry.Combine(gr, ge, GeometryCombineMode.Union, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
-                    yield return new double[] { gi, gu };
+                    yield return new ShapeMatch() { iou = gi / gu, rt = rt, el = el };
                 }
             }
+        }
+
+        public List<ShapeMatch> GetMatches(double value = 0.5)
+        {
+            var list = new List<ShapeMatch>();
+            var rts = new List<Shape>();
+            var els = new List<Shape>();
+            var ordered = GetIUAreas().Where(m => m.iou > value).OrderByDescending(m => m.iou);
+            foreach (var m in ordered)
+            {
+                if (rts.Contains(m.rt) || els.Contains(m.el))
+                    continue;
+                list.Add(m);
+                rts.Add(m.rt);
+                els.Add(m.el);
+            }
+            return list;
         }
 
         private static List<double[]> GetInfoList(string path)
@@ -165,5 +182,11 @@ namespace FaceDetectionTool_WPF
         }
     }
 
+    public class ShapeMatch
+    {
+        public double iou;
+        public Shape el;
+        public Shape rt;
+    }
     public enum TypeE { Image, Detection, Gt }
 }

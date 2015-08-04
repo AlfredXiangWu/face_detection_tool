@@ -63,7 +63,7 @@ namespace FaceDetectionTool_WPF
         {
             index--;
             if (index == -1)
-                index = imageInfoList.Count;
+                index = imageInfoList.Count - 1;
             ShowImg();
         }
 
@@ -94,6 +94,8 @@ namespace FaceDetectionTool_WPF
                 canvas.Children.Add(item);
             foreach (var item in ii.Ellipses)
                 canvas.Children.Add(item);
+
+            Calc_Click(null, null);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -113,11 +115,10 @@ namespace FaceDetectionTool_WPF
             info_win.Show();
         }
 
-        private void Calc_Click(object sender, RoutedEventArgs e)
+        private async void Calc_Click(object sender, RoutedEventArgs e)
         {
-            tb_Result.Text = string.Join("\n",
-                imageInfoList[index].Get_I_U_Areas().Select(d =>
-                $"交集面积:\n{d[0]}\n并集面积:\n{d[1]}\n"));
+            await Task.Run(() => System.Threading.Thread.Sleep(100));
+            tb_Result.Text = string.Join("\n", imageInfoList[index].Matches.Select(m => m.iou));
         }
     }
 }
