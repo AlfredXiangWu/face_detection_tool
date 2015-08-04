@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace FaceDetectionTool_WPF
 {
@@ -128,15 +129,18 @@ namespace FaceDetectionTool_WPF
 
         private void Calc_Click(object sender, RoutedEventArgs e)
         {
-            var rts = imageInfoList[index].Rectangles;
-            var els = imageInfoList[index].Ellipses;
-            var query = from rt in rts
-                        from el in els
+            var query = from rt in imageInfoList[index].Rectangles
+                        from el in imageInfoList[index].Ellipses
                         select new { rt, el };
 
             var sb = new StringBuilder();
+            var sw = new Stopwatch();
+            var tolerance = 0;
+            var ttype = ToleranceType.Relative;
+
             foreach (var item in query)
             {
+                sw.Start();
                 var rt = item.rt;
                 var x1 = Canvas.GetLeft(rt);
                 var y1 = Canvas.GetTop(rt);
@@ -152,9 +156,11 @@ namespace FaceDetectionTool_WPF
                 group.Children.Add(new TranslateTransform(x2, y2));
                 geo2.Transform = group;
 
-                var ci = Geometry.Combine(geo1, geo2, GeometryCombineMode.Intersect, null);
-                var cu = Geometry.Combine(geo1, geo2, GeometryCombineMode.Union, null);
-                sb.AppendLine($"交集面积：\n{ci.GetArea()}\n并集面积：\n{cu.GetArea()}\n");
+                var ci = Geometry.Combine(geo1, geo2, GeometryCombineMode.Intersect, null, tolerance, ttype);
+                var cu = Geometry.Combine(geo1, geo2, GeometryCombineMode.Union, null, tolerance, ttype);
+                sb.AppendLine($"交集面积：\n{ci.GetArea(tolerance, ttype)}\n并集面积：\n{cu.GetArea(tolerance, ttype)}");
+                sw.Stop();
+                sb.AppendLine(sw.ElapsedMilliseconds.ToString()).AppendLine();
             }
 
             tb_Result.Text = sb.ToString();

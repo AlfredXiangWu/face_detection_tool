@@ -13,5 +13,13 @@ namespace FaceDetectionTool_WPF
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            this.DispatcherUnhandledException += (s, e) =>
+            {
+                MessageBox.Show(e.Exception.ToString());
+                e.Handled = true;
+            };
+        }
     }
 }
