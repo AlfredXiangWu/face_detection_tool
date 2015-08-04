@@ -15,7 +15,7 @@ namespace FaceDetectionTool_WPF
     {
         public App()
         {
-            this.DispatcherUnhandledException += (s, e) =>
+            DispatcherUnhandledException += (s, e) =>
             {
                 MessageBox.Show(e.Exception.ToString());
                 e.Handled = true;

@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FaceDetectionTool_WPF"
         mc:Ignorable="d"
-        Title="Info" Height="224.62" Width="360.606" Loaded="Window_Loaded">
+        Title="Info" Height="224.62" Width="360.606" WindowStartupLocation="CenterOwner">
     <Grid>
-        <Label x:Name="label" Content="Image Path" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tb_Path" Height="42" Margin="10,40,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-        <GroupBox x:Name="groupBox" Header="Image info" HorizontalAlignment="Left" Margin="10,0,0,20" VerticalAlignment="Bottom" Width="150">
-            <StackPanel>
-                <Label x:Name="l_Width" Content="width"/>
-                <Label x:Name="l_Height" Content="height"/>
-            </StackPanel>
+        <Label Content="Image Path" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding Path}" Height="42" Margin="10,40,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <GroupBox Header="Image info" HorizontalAlignment="Left" Margin="10,0,0,20" VerticalAlignment="Bottom" Width="150">
+            <Grid>
+                <Label Content="{Binding Bitmap.Width}" ContentStringFormat="width: {0}"  Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Content="{Binding Bitmap.Height}" ContentStringFormat="height: {0}" Height="25" Margin="0,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            </Grid>
         </GroupBox>
         <GroupBox x:Name="groupBox1" Header="Detection info" HorizontalAlignment="Right" Margin="0,0,10,20" VerticalAlignment="Bottom" Width="150">
-            <StackPanel>
-                <Label x:Name="l_d" Content="detection"/>
-                <Label x:Name="l_gt" Content="ground truth"/>
-            </StackPanel>
+            <Grid>
+                <Label Content="{Binding FrList.Count}" ContentStringFormat="detection: {0}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Content="{Binding GtList.Count}" ContentStringFormat="ground truth: {0}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,25,0,0"/>
+            </Grid>
         </GroupBox>
 
     </Grid>

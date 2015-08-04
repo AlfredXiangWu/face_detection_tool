@@ -11,27 +11,30 @@ using System.Collections.Generic;
 
 namespace FaceDetectionTool_WPF
 {
-    public class IO
+    [Serializable]
+    public class ImagePath
     {
+        public string Name { get; set; }
+
         /// <summary>
         /// Image Path
         /// </summary>
-        public string FrmImagePath { get; set; } = Default.ImagePath;
+        public string FrmImagePath { get; set; }
 
         /// <summary>
         /// List File 
         /// </summary>
-        public string FrmList { get; set; } = Default.List;
+        public string FrmList { get; set; }
 
         /// <summary>
         /// Detection FR Path
         /// </summary>
-        public string FrmDetectionFrPath { get; set; } = Default.DetectionFrPath;
+        public string FrmDetectionFrPath { get; set; }
 
         /// <summary>
         /// Ground Truth FR Path
         /// </summary>
-        public string FrmGtFrPath { get; set; } = Default.GtFrPath;
+        public string FrmGtFrPath { get; set; }
 
         /// <summary>
         /// Get number of image

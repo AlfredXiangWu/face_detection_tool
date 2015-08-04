@@ -25,49 +25,37 @@ namespace FaceDetectionTool_WPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\FDDB\\originalPics")]
-        public string ImagePath {
+        [global::System.Configuration.DefaultSettingValueAttribute("paths.xml")]
+        public string PathsFileName {
             get {
-                return ((string)(this["ImagePath"]));
+                return ((string)(this["PathsFileName"]));
             }
             set {
-                this["ImagePath"] = value;
+                this["PathsFileName"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\FDDB\\detection_list.txt")]
-        public string List {
+        [global::System.Configuration.DefaultSettingValueAttribute("630")]
+        public double WinWidth {
             get {
-                return ((string)(this["List"]));
+                return ((double)(this["WinWidth"]));
             }
             set {
-                this["List"] = value;
+                this["WinWidth"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\FDDB\\fr")]
-        public string DetectionFrPath {
+        [global::System.Configuration.DefaultSettingValueAttribute("560")]
+        public double WinHeight {
             get {
-                return ((string)(this["DetectionFrPath"]));
+                return ((double)(this["WinHeight"]));
             }
             set {
-                this["DetectionFrPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\FDDB\\gt")]
-        public string GtFrPath {
-            get {
-                return ((string)(this["GtFrPath"]));
-            }
-            set {
-                this["GtFrPath"] = value;
+                this["WinHeight"] = value;
             }
         }
     }

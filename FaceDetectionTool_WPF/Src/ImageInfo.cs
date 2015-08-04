@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ShapePath = System.Windows.Shapes.Path;
 
 namespace FaceDetectionTool_WPF
 {
@@ -29,178 +30,128 @@ namespace FaceDetectionTool_WPF
         private BitmapSource bitmap;
         public BitmapSource Bitmap => bitmap = (bitmap ?? new BitmapImage(new Uri(Path)));
 
-        public List<Rectangle> Rectangles { get; set; } = new List<Rectangle>();
+        public List<Shape> Rectangles { get; set; }
 
-        public List<Ellipse> Ellipses { get; set; } = new List<Ellipse>();
+        public List<Shape> Ellipses { get; set; }
 
-        public BitmapSource Drawing(Brush color, TypeE type, BitmapSource img = null, double[] prob = null)
+        private List<double[]> areas;
+        public List<double[]> I_U_Areas
         {
-            img = img ?? Bitmap;
-            var drawingVisual = new DrawingVisual();
-            var drawingContext = drawingVisual.RenderOpen();
-            drawingContext.DrawImage(img, new Rect(0, 0, img.Width, img.Height));
-            var pen = new Pen(color, 4.0f);
-            try
+            get
             {
-                double xtl, ytl, width, height;
-                switch (type)
-                {
-                    case TypeE.Detection:
-                        {
-                            prob = new double[FrList.Count];
-                            for (int i = 0; i < prob.Length; i++)
-                            {
-                                var s = FrList[i];
-                                xtl = s[0];
-                                ytl = s[1];
-                                width = s[2] - xtl + 1;
-                                height = s[3] - ytl + 1;
-                                prob[i] = s[4];
-
-                                drawingContext.DrawRectangle(null, pen, new Rect(xtl, ytl, width, height));
-                            }
-                        }
-                        break;
-                    case TypeE.Gt:
-                        {
-                            prob = new double[GtList.Count];
-                            for (int i = 0; i < prob.Length; i++)
-                            {
-                                var s = GtList[i];
-                                if (s.Length == 5)
-                                {
-                                    width = s[0];
-                                    height = s[1];
-                                    var angle = s[2] / Math.PI * 180;
-                                    xtl = s[3];
-                                    ytl = s[4];
-                                    prob[i] = 1;
-
-                                    var rt = new RotateTransform(angle, xtl, ytl);
-                                    drawingContext.PushTransform(rt);
-                                    drawingContext.DrawEllipse(null, pen, new Point(xtl, ytl), width, height);
-                                    drawingContext.Pop();
-                                }
-                                else
-                                {
-                                    xtl = s[0];
-                                    ytl = s[1];
-                                    width = s[2] - xtl + 1;
-                                    height = s[3] - ytl + 1;
-                                    prob[i] = 1;
-
-                                    drawingContext.DrawRectangle(null, pen, new Rect(xtl, ytl, width, height));
-                                }
-                            }
-                        }
-                        break;
-                }
-
-                drawingContext.Close();
-                RenderTargetBitmap bmp = new RenderTargetBitmap(img.PixelWidth, img.PixelHeight, img.DpiX, img.DpiY, PixelFormats.Pbgra32);
-                bmp.Render(drawingVisual);
-                return bmp;
+                if (areas == null)
+                    areas = Get_I_U_Areas().ToList();
+                return areas;
             }
-            catch
-            { return null; }
         }
 
-        public double[] AddShapes(Brush color, TypeE type)
+        public bool AddShapes(Brush color, TypeE type, double opacity = 0.5)
         {
             try
             {
-                var opacity = 0.5;
-                double[] prob = null;
+                if (Rectangles == null)
+                    Rectangles = new List<Shape>();
+                if (Ellipses == null)
+                    Ellipses = new List<Shape>();
+
                 double xtl, ytl, width, height;
                 switch (type)
                 {
                     case TypeE.Detection:
                         {
-                            prob = new double[FrList.Count];
-                            for (int i = 0; i < prob.Length; i++)
+                            foreach (var fr in FrList)
                             {
-                                var s = FrList[i];
-                                xtl = s[0];
-                                ytl = s[1];
-                                width = s[2] - xtl + 1;
-                                height = s[3] - ytl + 1;
-                                prob[i] = s[4];
+                                xtl = fr[0];
+                                ytl = fr[1];
+                                width = fr[2] - xtl + 1;
+                                height = fr[3] - ytl + 1;
 
-                                var rt = new Rectangle()
+                                var g_rt = new RectangleGeometry(new Rect(xtl, ytl, width, height));
+                                var rt = new ShapePath()
                                 {
-                                    Width = width,
-                                    Height = height,
+                                    Data = g_rt,
                                     Fill = color,
                                     Opacity = opacity,
                                 };
                                 Rectangles.Add(rt);
-                                Canvas.SetTop(rt, ytl);
-                                Canvas.SetLeft(rt, xtl);
                             }
                         }
                         break;
                     case TypeE.Gt:
                         {
-                            prob = new double[GtList.Count];
-                            for (int i = 0; i < prob.Length; i++)
+                            foreach (var gt in GtList)
                             {
-                                var s = GtList[i];
-                                if (s.Length == 5)
+                                if (gt.Length == 5)
                                 {
-                                    width = s[0];
-                                    height = s[1];
-                                    var angle = s[2] / Math.PI * 180;
-                                    xtl = s[3];
-                                    ytl = s[4];
-                                    prob[i] = 1;
+                                    width = gt[0];
+                                    height = gt[1];
+                                    var angle = gt[2] / Math.PI * 180;
+                                    xtl = gt[3];
+                                    ytl = gt[4];
 
-                                    var rt = new RotateTransform(angle, width, height);
-                                    var el = new Ellipse()
+                                    var rt = new RotateTransform(angle, xtl, ytl);
+                                    var g_el = new EllipseGeometry()
                                     {
-                                        Width = width * 2,
-                                        Height = height * 2,
+                                        Center = new Point(xtl, ytl),
+                                        RadiusX = width,
+                                        RadiusY = height,
+                                        Transform = rt
+                                    };
+                                    var el = new ShapePath()
+                                    {
+                                        Data = g_el,
                                         Fill = color,
-                                        RenderTransform = rt,
                                         Opacity = opacity,
-                                        Tag = rt,
                                     };
                                     Ellipses.Add(el);
-                                    Canvas.SetTop(el, ytl - height);
-                                    Canvas.SetLeft(el, xtl - width);
                                 }
                                 else
                                 {
-                                    xtl = s[0];
-                                    ytl = s[1];
-                                    width = s[2] - xtl + 1;
-                                    height = s[3] - ytl + 1;
-                                    prob[i] = 1;
+                                    xtl = gt[0];
+                                    ytl = gt[1];
+                                    width = gt[2] - xtl + 1;
+                                    height = gt[3] - ytl + 1;
 
-                                    var rt = new Rectangle()
+                                    var g_rt = new RectangleGeometry(new Rect(xtl, ytl, width, height));
+                                    var rt = new ShapePath()
                                     {
-                                        Width = width,
-                                        Height = height,
+                                        Data = g_rt,
                                         Fill = color,
                                         Opacity = opacity,
                                     };
                                     Rectangles.Add(rt);
-                                    Canvas.SetTop(rt, ytl);
-                                    Canvas.SetLeft(rt, xtl);
                                 }
                             }
                         }
                         break;
                 }
-                return prob;
+                return true;
             }
             catch
-            { return null; }
+            { return false; }
         }
 
         public void ClearShapes()
         {
-            Rectangles.Clear();
-            Ellipses.Clear();
+            Rectangles?.Clear();
+            Ellipses?.Clear();
+        }
+
+        public IEnumerable<double[]> Get_I_U_Areas(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative)
+        {
+            foreach (var rt in Rectangles)
+            {
+                foreach (var el in Ellipses)
+                {
+                    var gr = rt.RenderedGeometry;
+                    var ge = el.RenderedGeometry;
+                    var gi = Geometry.Combine(gr, ge, GeometryCombineMode.Intersect, null, tolerance, toleranceType)
+                        .GetArea(tolerance, toleranceType);
+                    var gu = Geometry.Combine(gr, ge, GeometryCombineMode.Union, null, tolerance, toleranceType)
+                        .GetArea(tolerance, toleranceType);
+                    yield return new double[] { gi, gu };
+                }
+            }
         }
 
         private static List<double[]> GetInfoList(string path)

@@ -2,17 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FaceDetectionTool_WPF.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ImagePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\FDDB\originalPics</Value>
+    <Setting Name="PathsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">paths.xml</Value>
     </Setting>
-    <Setting Name="List" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\FDDB\detection_list.txt</Value>
+    <Setting Name="WinWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">630</Value>
     </Setting>
-    <Setting Name="DetectionFrPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\FDDB\fr</Value>
-    </Setting>
-    <Setting Name="GtFrPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\FDDB\gt</Value>
+    <Setting Name="WinHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">560</Value>
     </Setting>
   </Settings>
 </SettingsFile>

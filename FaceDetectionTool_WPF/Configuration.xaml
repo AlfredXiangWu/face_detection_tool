@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FaceDetectionTool_WPF"
         mc:Ignorable="d"
-        Title="Configuration" Height="394" Width="596" Loaded="Window_Loaded">
+        Title="Configuration" Height="408" Width="608" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Width" Value="60"/>
@@ -28,19 +28,24 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Label Content="Image Path" Margin="10,15,0,0"/>
-        <TextBox x:Name="tb_IP" Margin="10,50,10,0" Text="{Binding FrmImagePath}"/>
-        <Button Tag="{Binding ElementName=tb_IP}" Margin="0,15,10,0" Click="Button_Click"/>
-        <Label Content="List File" Margin="10,90,0,0"/>
-        <TextBox x:Name="tb_LF" Margin="10,125,10,0" Text="{Binding FrmList}"/>
-        <Button Tag="{Binding ElementName=tb_LF}" Margin="0,90,10,0" Click="Button_Click"/>
-        <Label Content="Detection FR Path" Margin="10,165,0,0"/>
-        <TextBox x:Name="tb_DFP" Margin="10,200,10,0" Text="{Binding FrmDetectionFrPath}"/>
-        <Button Tag="{Binding ElementName=tb_DFP}" Margin="0,165,10,0" Click="Button_Click"/>
-        <Label Content="GT FR Path" Margin="10,240,0,0"/>
-        <TextBox x:Name="tb_GFP" Margin="10,275,10,0" Text="{Binding FrmGtFrPath}"/>
-        <Button Tag="{Binding ElementName=tb_GFP}" Margin="0,240,10,0" Click="Button_Click"/>
+        <Label Content="Image Path" Margin="10,40,0,0"/>
+        <TextBox x:Name="tb_IP" Margin="10,75,10,0" Text="{Binding FrmImagePath}"/>
+        <Button Tag="{Binding ElementName=tb_IP}" Margin="0,40,10,0" Click="Button_Click"/>
+        <Label Content="List File" Margin="10,115,0,0"/>
+        <TextBox x:Name="tb_LF" Margin="10,150,10,0" Text="{Binding FrmList}"/>
+        <Button Tag="{Binding ElementName=tb_LF}" Margin="0,115,10,0" Click="Button_Click"/>
+        <Label Content="Detection FR Path" Margin="10,190,0,0"/>
+        <TextBox x:Name="tb_DFP" Margin="10,225,10,0" Text="{Binding FrmDetectionFrPath}"/>
+        <Button Tag="{Binding ElementName=tb_DFP}" Margin="0,190,10,0" Click="Button_Click"/>
+        <Label Content="GT FR Path" Margin="10,265,0,0"/>
+        <TextBox x:Name="tb_GFP" Margin="10,300,10,0" Text="{Binding FrmGtFrPath}"/>
+        <Button Tag="{Binding ElementName=tb_GFP}" Margin="0,265,10,0" Click="Button_Click"/>
         <Button x:Name="btnOK" Click="OK_Click" Content="OK" HorizontalAlignment="Center" Margin="0,0,150,10" VerticalAlignment="Bottom" Width="75"/>
         <Button x:Name="btnCancel" Click="Cancel_Click" Content="Cancel" HorizontalAlignment="Center" Margin="150,0,0,10" VerticalAlignment="Bottom" Width="75"/>
+        
+        <Label Content="Selection：" Margin="10,5,0,0"/>
+        <ComboBox x:Name="cbSelection" HorizontalAlignment="Left" Margin="90,7,0,0" VerticalAlignment="Top" Width="140" IsEditable="True" Height="21" DisplayMemberPath="Name" SelectionChanged="cbSelection_SelectionChanged"/>
+        <Button Content="New" HorizontalAlignment="Left" Margin="240,6,0,0" Height="23" Width="60" Click="New_Click"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="305,6,0,0" Height="23" Click="Del_Click"/>
     </Grid>
 </Window>
