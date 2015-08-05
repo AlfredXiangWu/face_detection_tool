@@ -29,9 +29,8 @@ namespace FaceDetectionTool_WPF
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            var count = 1000;
+            var count = 20;
             var points = list.EvalPoints(count);
-            var y = canvas.Height;
             var g = new StreamGeometry();
             using (StreamGeometryContext context = g.Open())
             {

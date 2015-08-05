@@ -9,22 +9,26 @@ namespace FaceDetectionTool_WPF
 {
     public static class Evaluation
     {
-        public static Point EvalPrecisionAndRecall(this IEnumerable<ImageInfo> list, double P, double T, double thr = 0.5)
+        /// <summary>
+        /// 计算Recall(对应X)和Precision(对应Y)。
+        /// </summary>
+        /// <param name="list">ImageInfo列表</param>
+        /// <param name="thr">概率阈值</param>
+        /// <returns></returns>
+        public static Point EvalRecallAndPrecision(this IEnumerable<ImageInfo> list, double thr = 0.5)
         {
-            double fp = list.Sum(i => { i.InitShapes(false); return i.GetMatches(thr).Count; });
-            return new Point(fp / T * 100, fp / P * 100);
+            double p = list.Sum(i => i.FrList.Where(f => f[4] >= thr).Count());
+            double t = list.Sum(i => i.GtList.Count);
+            double tp = list.Sum(i => i.Matches.Where(m => m.prob >= thr).Count());
+            return new Point(tp / t * 100, tp / p * 100);
         }
 
         public static Point[] EvalPoints(this IEnumerable<ImageInfo> list, int count, double thrS = 0.5, double thrE = 1)
         {
-            double p = list.Sum(i => i.FrList.Count);
-            double t = list.Sum(i => i.GtList.Count);
             var points = new Point[count];
             var delta = (thrE - thrS) / count;
-            //Parallel.For(0, count, (i) =>
-            // { points[i] = list.EvalPrecisionAndRecall(p, t, thrS + i * delta); });
             for (int i = 0; i < count; i++)
-                points[i] = list.EvalPrecisionAndRecall(p, t, thrS + i * delta);
+                points[i] = list.EvalRecallAndPrecision(thrS + i * delta);
             return points;
         }
     }

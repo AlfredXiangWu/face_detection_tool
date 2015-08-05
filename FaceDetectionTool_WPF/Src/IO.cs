@@ -57,6 +57,5 @@ namespace FaceDetectionTool_WPF
             }
             return list;
         }
-
     }
 }

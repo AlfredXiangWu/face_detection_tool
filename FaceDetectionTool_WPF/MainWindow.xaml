@@ -11,7 +11,6 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="140"/>
         </Grid.ColumnDefinitions>
-        <GridSplitter Width="3" Background="Beige"/>
         <Menu x:Name="menu" Margin="0" VerticalAlignment="Top" Height="23" Grid.ColumnSpan="2">
             <MenuItem Header="File" Padding="6,3">
                 <MenuItem Header="New" Click="New_Click"/>
@@ -24,7 +23,12 @@
         </ScrollViewer>
         <Button x:Name="btnLast" Content="Last" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="50" Grid.Column="1" Click="btnLast_Click"/>
         <Button x:Name="btnNext" Content="Next" HorizontalAlignment="Right" Margin="0,30,10,0" VerticalAlignment="Top" Width="50" Grid.Column="1" Click="btnNext_Click"/>
-        <TextBox x:Name="tb_Result" Grid.Column="1" Margin="5,104,5,5" TextWrapping="Wrap" Text=""/>
-        <Button x:Name="button" Content="匹配结果" Grid.Column="1" HorizontalAlignment="Center" Margin="0,80,0,0" VerticalAlignment="Top" Width="75" Click="Calc_Click"/>
+        <Slider x:Name="sliderThr" Value="0.5" Minimum="0.5" Maximum="1"  Grid.Column="1" Margin="15,105,15,0" VerticalAlignment="Top" SmallChange="0.03" LargeChange="0.1" ValueChanged="sliderThr_ValueChanged" Height="20"/>
+        <Label Content="Thr" Grid.Column="1" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Height="25"/>
+        <TextBox Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,76,10,0" TextWrapping="Wrap" Text="{Binding ElementName=sliderThr,Path=Value,StringFormat=0.0000000,Mode=TwoWay}" VerticalAlignment="Top" Width="85" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Content="Precision" Grid.Column="1" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbPrecision" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,131,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="55"/>
+        <Label Content="Recall" Grid.Column="1" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbRecall" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,161,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="55"/>
     </Grid>
 </Window>

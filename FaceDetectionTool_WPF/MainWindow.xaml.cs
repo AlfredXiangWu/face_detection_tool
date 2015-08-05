@@ -38,12 +38,9 @@ namespace FaceDetectionTool_WPF
             var new_configuration = new Configuration();
             new_configuration.Accept = (s) =>
             {
-                btnLast.IsEnabled = true;
-                btnNext.IsEnabled = true;
-
                 imagePath = s.ImagePath;
                 imageInfoList = imagePath.GetImageInfoList();
-               // ShowImg();
+                ShowImg();
                 this.Activate();
             };
             new_configuration.Show();
@@ -77,6 +74,8 @@ namespace FaceDetectionTool_WPF
 
         private void ShowImg()
         {
+            if (imageInfoList.Count == 0)
+                return;
             var ii = imageInfoList[index];
 
             canvas.Children.Clear();
@@ -84,18 +83,11 @@ namespace FaceDetectionTool_WPF
             canvas.Width = image.Width;
             canvas.Height = image.Height;
             canvas.Children.Add(image);
-
-            if (ii.D_Shapes == null || ii.G_Shapes == null)
-            {
-                ii.AddShapes(Brushes.LightBlue, TypeE.Detection);
-                ii.AddShapes(Brushes.DeepPink, TypeE.Gt);
-            }
+            ii.ShapesPrepare();
             foreach (var item in ii.D_Shapes)
                 canvas.Children.Add(item);
             foreach (var item in ii.G_Shapes)
                 canvas.Children.Add(item);
-
-            Calc_Click(null, null);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -115,25 +107,19 @@ namespace FaceDetectionTool_WPF
             info_win.Show();
         }
 
-        private void Calc_Click(object sender, RoutedEventArgs e)
-        {
-            var sw = new Stopwatch();
-            sw.Start();
-            var ms = imageInfoList[index].Matches;
-            var str = string.Join("\n", ms.Select(m => m.IoU));
-            tb_Result.Text += $"{str}\n{sw.ElapsedMilliseconds}ms";
-            sw.Stop();
-            foreach (var item in ms)
-            {
-                item.D_Shape.Fill = Brushes.Blue;
-                item.G_Shape.Fill = Brushes.Red;
-            }
-        }
-
         private void Eval_Click(object sender, RoutedEventArgs e)
         {
             var win = new EvaluationInfo(imageInfoList);
             win.Show();
+        }
+
+        private void sliderThr_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (imageInfoList == null)
+                return;
+            var p = imageInfoList.EvalRecallAndPrecision(sliderThr.Value);
+            tbRecall.Text = p.X.ToString("0.000");
+            tbPrecision.Text = p.Y.ToString("0.000");
         }
     }
 }
