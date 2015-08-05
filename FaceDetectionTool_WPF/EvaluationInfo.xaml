@@ -1,0 +1,20 @@
+﻿<Window x:Class="FaceDetectionTool_WPF.EvaluationInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FaceDetectionTool_WPF"
+        mc:Ignorable="d"
+        Title="EvaluationInfo" Height="332.794" Width="495.547">
+    <Grid>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+        <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="202" Margin="29,71,0,0" VerticalAlignment="Top" Width="422"  RenderTransformOrigin="0.5 0.5" >
+            <!--<Line X1="0" Y1="0" X2="0" Y2="202" Stroke="Black"/>-->
+            <!--<Line X1="0" Y1="202" X2="422" Y2="202" Stroke="Black"/>-->
+            <Canvas.RenderTransform>
+                <ScaleTransform ScaleY="-1"/>
+            </Canvas.RenderTransform>
+        </Canvas>
+
+    </Grid>
+</Window>

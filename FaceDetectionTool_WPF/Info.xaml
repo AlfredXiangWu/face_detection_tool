@@ -19,6 +19,8 @@
             <Grid>
                 <Label Content="{Binding FrList.Count}" ContentStringFormat="detection: {0}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Label Content="{Binding GtList.Count}" ContentStringFormat="ground truth: {0}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,25,0,0"/>
+                <Label Content="{Binding TP}" ContentStringFormat="TP: {0}" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <Label Content="{Binding FP}" ContentStringFormat="FP: {0}" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,25,0,0"/>
             </Grid>
         </GroupBox>
 

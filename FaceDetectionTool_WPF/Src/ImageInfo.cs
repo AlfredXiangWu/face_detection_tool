@@ -39,25 +39,24 @@ namespace FaceDetectionTool_WPF
             get
             {
                 if (macthes == null)
-                    macthes = GetMatches();
+                    macthes = GetIUAreas().ToList();
                 return macthes;
             }
         }
+        public int TP => Matches.Count;
+        public int FP => FrList.Count - TP;
 
         public bool AddShapes(Brush color, TypeE type, double opacity = 0.5)
         {
             try
             {
-                if (D_Shapes == null)
-                    D_Shapes = new List<Shape>();
-                if (G_Shapes == null)
-                    G_Shapes = new List<Shape>();
-
                 double xtl, ytl, width, height;
                 switch (type)
                 {
                     case TypeE.Detection:
                         {
+                            if (D_Shapes == null)
+                                D_Shapes = new List<Shape>();
                             foreach (var fr in FrList)
                             {
                                 xtl = fr[0];
@@ -79,6 +78,8 @@ namespace FaceDetectionTool_WPF
                         break;
                     case TypeE.Gt:
                         {
+                            if (G_Shapes == null)
+                                G_Shapes = new List<Shape>();
                             foreach (var gt in GtList)
                             {
                                 if (gt.Length == 5)
@@ -139,6 +140,16 @@ namespace FaceDetectionTool_WPF
             G_Shapes?.Clear();
         }
 
+        public void InitShapes(bool refresh)
+        {
+            if (D_Shapes == null || refresh)
+                AddShapes(Brushes.LightBlue, TypeE.Detection);
+            if (G_Shapes == null || refresh)
+                AddShapes(Brushes.DeepPink, TypeE.Gt);
+            if (macthes == null || refresh)
+                macthes = GetIUAreas().ToList();
+        }
+
         public IEnumerable<ShapeMatch> GetIUAreas(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative)
         {
             foreach (var gss in G_Shapes)
@@ -151,7 +162,8 @@ namespace FaceDetectionTool_WPF
                         .GetArea(tolerance, toleranceType);
                     var gu = Geometry.Combine(ds, gs, GeometryCombineMode.Union, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
-                    yield return new ShapeMatch() { IoU = gi / gu, D_Shape = dss, G_Shape = gss };
+                    if (gi / gu > 0.5)
+                        yield return new ShapeMatch() { IoU = gi / gu, D_Shape = dss, G_Shape = gss };
                 }
             }
         }
@@ -161,7 +173,7 @@ namespace FaceDetectionTool_WPF
             var list = new List<ShapeMatch>();
             var dss = new List<Shape>();
             var gss = new List<Shape>();
-            var ordered = GetIUAreas().Where(m => m.IoU > value).OrderByDescending(m => m.IoU);
+            var ordered = Matches.Where(m => m.IoU > value).OrderByDescending(m => m.IoU);
             foreach (var m in ordered)
             {
                 if (dss.Contains(m.D_Shape) || gss.Contains(m.G_Shape))

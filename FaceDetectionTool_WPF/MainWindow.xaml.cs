@@ -43,7 +43,7 @@ namespace FaceDetectionTool_WPF
 
                 imagePath = s.ImagePath;
                 imageInfoList = imagePath.GetImageInfoList();
-                ShowImg();
+               // ShowImg();
                 this.Activate();
             };
             new_configuration.Show();
@@ -128,6 +128,12 @@ namespace FaceDetectionTool_WPF
                 item.D_Shape.Fill = Brushes.Blue;
                 item.G_Shape.Fill = Brushes.Red;
             }
+        }
+
+        private void Eval_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new EvaluationInfo(imageInfoList);
+            win.Show();
         }
     }
 }
