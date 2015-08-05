@@ -161,7 +161,7 @@ namespace face_detection_tool
             int TP = 0;
             int T = 0;
             int P = 0;
-            double percision, recall;
+            double precision, recall;
             process data_processing = new process();
             data_processing.Show();
             data_processing.progressBar1.Value = 0;
@@ -184,10 +184,129 @@ namespace face_detection_tool
                 data_processing.progressBar1.Value++;
             }
             data_processing.Close();
-            percision = Convert.ToDouble(TP) / Convert.ToDouble(P)*100;
+            precision = Convert.ToDouble(TP) / Convert.ToDouble(P)*100;
             recall = Convert.ToDouble(TP) / Convert.ToDouble(T)*100;
-            textBox1.Text = percision.ToString("0.00") + '%';
+            textBox1.Text = precision.ToString("0.00") + '%';
+            textBox2.Text = recall.ToString("0.00") + '%';
+
+            prToolStripMenuItem1.Enabled = true;
+            printErrorLogToolStripMenuItem2.Enabled = true;
+            textBox3.Text = "0.5";
+        }
+
+        private void prToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            double[] precision = new double[10001];
+            double[] recall = new double[10001];
+            int count = 0;
+            PR pr_curve = new PR();
+            for (double thr = 0.5; thr <= 1; thr = thr + (1 - 0.5) / 10000)
+            {
+                int TP = 0;
+                int T = 0;
+                int P = 0;
+                for (int i = 0; i < image_info_list.Count; i++)
+                {
+                    if (image_info_list[i].DetectFrList == null)
+                    {
+                        image_info_list[i].DetectFrList = io.getFrList(image_info_list[i].DetectFrPath);
+                    }
+                    if (image_info_list[i].GtFrList == null)
+                    {
+                        image_info_list[i].GtFrList = io.getFrList(image_info_list[i].GtFrPath);
+                    }
+                    if (image_info_list[i].Scores == null)
+                    {
+                        eval.singleImageMatch(image_info_list[i], 0.5);
+                    }
+
+                    for (int j = 0; j < image_info_list[i].DetectFrList.Count; j++)
+                    {
+                        if (Convert.ToDouble(image_info_list[i].DetectFrList[j][4]) >= thr)
+                        {
+                            P++;
+                            if (image_info_list[i].Scores[j] > 0.5)
+                            {
+                                TP++;
+                            }
+                        }
+                    }
+
+                    T += image_info_list[i].GtFrList.Count;
+                }
+
+                precision[count] = Convert.ToDouble(TP) / Convert.ToDouble(P);
+                recall[count] = Convert.ToDouble(TP) / Convert.ToDouble(T);
+                count++;
+            }
+
+            // draw Precision-Recall Curve
+            Bitmap img = new Bitmap(pr_curve.pictureBox1.Width, pr_curve.pictureBox1.Height);
+            pr_curve.pictureBox1.Image = img;
+            pr_curve.Show();
+            Graphics g = Graphics.FromImage(pr_curve.pictureBox1.Image);
+            g.FillRectangle(Brushes.White, new Rectangle(0, 0, pr_curve.pictureBox1.Width, pr_curve.pictureBox1.Height));
+            Pen pen = new Pen(Color.Blue, 2);
+            for (int i = 0; i < precision.Length - 1; i++)
+            {
+                g = Graphics.FromImage(pr_curve.pictureBox1.Image);
+                g.DrawLine(pen, Convert.ToSingle(recall[i]), Convert.ToSingle(precision[i]), Convert.ToSingle(recall[i + 1]), Convert.ToSingle(precision[i + 1]));
+            }
+        }
+
+        private void printErrorLogToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            int idx = trackBar1.Value;
+            double thr = 0.5 + idx * 0.05;
+            textBox3.Text = thr.ToString();
+
+            double precision, recall;
+            int TP = 0;
+            int T = 0;
+            int P = 0;
+            for (int i = 0; i < image_info_list.Count; i++)
+            {
+                if (image_info_list[i].DetectFrList == null)
+                {
+                    image_info_list[i].DetectFrList = io.getFrList(image_info_list[i].DetectFrPath);
+                }
+                if (image_info_list[i].GtFrList == null)
+                {
+                    image_info_list[i].GtFrList = io.getFrList(image_info_list[i].GtFrPath);
+                }
+                if (image_info_list[i].Scores == null)
+                {
+                    eval.singleImageMatch(image_info_list[i], 0.5);
+                }
+
+                for (int j = 0; j < image_info_list[i].DetectFrList.Count; j++)
+                {
+                    if (Convert.ToDouble(image_info_list[i].DetectFrList[j][4]) >= thr)
+                    {
+                        P++;
+                        if (image_info_list[i].Scores[j] > 0.5)
+                        {
+                            TP++;
+                        }
+                    }
+                }
+
+                T += image_info_list[i].GtFrList.Count;
+            }
+
+            precision = Convert.ToDouble(TP) / Convert.ToDouble(P)*100;
+            recall = Convert.ToDouble(TP) / Convert.ToDouble(T)*100;
+
+            textBox1.Text = precision.ToString("0.00") + '%';
             textBox2.Text = recall.ToString("0.00") + '%';
         }
     }
+
+
+
 }
