@@ -85,14 +85,14 @@ namespace FaceDetectionTool_WPF
             canvas.Height = image.Height;
             canvas.Children.Add(image);
 
-            if (ii.Rectangles == null || ii.Ellipses == null)
+            if (ii.D_Shapes == null || ii.G_Shapes == null)
             {
                 ii.AddShapes(Brushes.Blue, TypeE.Detection);
                 ii.AddShapes(Brushes.Red, TypeE.Gt);
             }
-            foreach (var item in ii.Rectangles)
+            foreach (var item in ii.D_Shapes)
                 canvas.Children.Add(item);
-            foreach (var item in ii.Ellipses)
+            foreach (var item in ii.G_Shapes)
                 canvas.Children.Add(item);
 
             Calc_Click(null, null);
@@ -117,7 +117,11 @@ namespace FaceDetectionTool_WPF
 
         private void Calc_Click(object sender, RoutedEventArgs e)
         {
+            var sw = new Stopwatch();
+            sw.Start();
             tb_Result.Text = string.Join("\n", imageInfoList[index].Matches.Select(m => m.iou));
+            sw.Stop();
+            tb_Result.Text += $"\n{sw.ElapsedMilliseconds}ms";
         }
     }
 }

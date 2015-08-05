@@ -27,12 +27,11 @@ namespace FaceDetectionTool_WPF
         private List<double[]> frList;
         public List<double[]> FrList => frList = (frList ?? GetInfoList(PathFr));
 
-        private BitmapSource bitmap;
-        public BitmapSource Bitmap => bitmap = (bitmap ?? new BitmapImage(new Uri(Path)));
+        public BitmapSource Bitmap => new BitmapImage(new Uri(Path));
 
-        public List<Shape> Rectangles { get; set; }
+        public List<Shape> D_Shapes { get; set; }
 
-        public List<Shape> Ellipses { get; set; }
+        public List<Shape> G_Shapes { get; set; }
 
         private List<ShapeMatch> macthes;
         public List<ShapeMatch> Matches
@@ -49,10 +48,10 @@ namespace FaceDetectionTool_WPF
         {
             try
             {
-                if (Rectangles == null)
-                    Rectangles = new List<Shape>();
-                if (Ellipses == null)
-                    Ellipses = new List<Shape>();
+                if (D_Shapes == null)
+                    D_Shapes = new List<Shape>();
+                if (G_Shapes == null)
+                    G_Shapes = new List<Shape>();
 
                 double xtl, ytl, width, height;
                 switch (type)
@@ -74,7 +73,7 @@ namespace FaceDetectionTool_WPF
                                     Opacity = opacity,
                                     Tag = g_rt,
                                 };
-                                Rectangles.Add(rt);
+                                D_Shapes.Add(rt);
                             }
                         }
                         break;
@@ -105,7 +104,7 @@ namespace FaceDetectionTool_WPF
                                         Opacity = opacity,
                                         Tag = g_el,
                                     };
-                                    Ellipses.Add(el);
+                                    G_Shapes.Add(el);
                                 }
                                 else
                                 {
@@ -122,7 +121,7 @@ namespace FaceDetectionTool_WPF
                                         Opacity = opacity,
                                         Tag = g_rt,
                                     };
-                                    Rectangles.Add(rt);
+                                    G_Shapes.Add(rt);
                                 }
                             }
                         }
@@ -136,23 +135,23 @@ namespace FaceDetectionTool_WPF
 
         public void ClearShapes()
         {
-            Rectangles?.Clear();
-            Ellipses?.Clear();
+            D_Shapes?.Clear();
+            G_Shapes?.Clear();
         }
 
         public IEnumerable<ShapeMatch> GetIUAreas(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative)
         {
-            foreach (var el in Ellipses)
+            foreach (var gss in G_Shapes)
             {
-                foreach (var rt in Rectangles)
+                foreach (var dss in D_Shapes)
                 {
-                    var gr = (RectangleGeometry)rt.Tag;
-                    var ge = (EllipseGeometry)el.Tag;
-                    var gi = Geometry.Combine(gr, ge, GeometryCombineMode.Intersect, null, tolerance, toleranceType)
+                    var ds = (Geometry)dss.Tag;
+                    var gs = (Geometry)gss.Tag;
+                    var gi = Geometry.Combine(ds, gs, GeometryCombineMode.Intersect, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
-                    var gu = Geometry.Combine(gr, ge, GeometryCombineMode.Union, null, tolerance, toleranceType)
+                    var gu = Geometry.Combine(ds, gs, GeometryCombineMode.Union, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
-                    yield return new ShapeMatch() { iou = gi / gu, rt = rt, el = el };
+                    yield return new ShapeMatch() { iou = gi / gu, d_shape = dss, g_shape = gss };
                 }
             }
         }
@@ -160,16 +159,16 @@ namespace FaceDetectionTool_WPF
         public List<ShapeMatch> GetMatches(double value = 0.5)
         {
             var list = new List<ShapeMatch>();
-            var rts = new List<Shape>();
-            var els = new List<Shape>();
+            var dss = new List<Shape>();
+            var gss = new List<Shape>();
             var ordered = GetIUAreas().Where(m => m.iou > value).OrderByDescending(m => m.iou);
             foreach (var m in ordered)
             {
-                if (rts.Contains(m.rt) || els.Contains(m.el))
+                if (dss.Contains(m.d_shape) || gss.Contains(m.g_shape))
                     continue;
                 list.Add(m);
-                rts.Add(m.rt);
-                els.Add(m.el);
+                dss.Add(m.d_shape);
+                gss.Add(m.g_shape);
             }
             return list;
         }
@@ -188,8 +187,8 @@ namespace FaceDetectionTool_WPF
     public class ShapeMatch
     {
         public double iou;
-        public Shape el;
-        public Shape rt;
+        public Shape g_shape;
+        public Shape d_shape;
     }
     public enum TypeE { Image, Detection, Gt }
 }
