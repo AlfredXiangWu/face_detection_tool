@@ -62,6 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="winform\process.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="winform\process.Designer.cs">
+      <DependentUpon>process.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Evaluation.cs" />
     <Compile Include="src\ImageInfo.cs" />
     <Compile Include="winform\info.cs">
@@ -85,6 +91,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="winform\process.resx">
+      <DependentUpon>process.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="winform\info.resx">
       <DependentUpon>info.cs</DependentUpon>
     </EmbeddedResource>

@@ -44,14 +44,11 @@ namespace face_detection_tool
                 var name = txt.ReadLine();
                 image_info.ImgPath = Path.Combine(FrmImagePath, name);
                 var tmp = name.Split('.')[0];
-                image_info.DetectFrPath = Path.Combine(FrmDetectionFrPath, tmp + ".jpg.fr");
+                image_info.DetectFrPath = Path.Combine(FrmDetectionFrPath, tmp + ".fr");
                 image_info.GtFrPath = Path.Combine(FrmGtFrPath, tmp + ".fr");
-
-                //image_info.DetecFrList = getFrList(image_info.DetectFrPath);
-                //image_info.GtFrList = getFrList(image_info.GtFrPath);
-
                 list.Add(image_info);
             }
+            txt.Close();
             return list;
         }
 
@@ -70,6 +67,7 @@ namespace face_detection_tool
                 var line = txt.ReadLine().Replace(' ', '\t').Split('\t').Select(s => double.Parse(s)).ToArray();
                 list.Add(line);
             }
+            txt.Close();
             return list;
         }
         

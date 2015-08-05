@@ -63,6 +63,7 @@ namespace face_detection_tool
             button1.Enabled = true;
             button2.Enabled = true;
             infoToolStripMenuItem.Enabled = true;
+            evaluationToolStripMenuItem.Enabled = true;
 
             io = new_configuration.io;
             image_info_list = io.getImageInfo();
@@ -79,8 +80,6 @@ namespace face_detection_tool
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            image_info_list[index].DetectFrList.Clear();
-            image_info_list[index].GtFrList.Clear();
 
             if (index == 0)
             {
@@ -98,9 +97,6 @@ namespace face_detection_tool
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            image_info_list[index].DetectFrList.Clear();
-            image_info_list[index].GtFrList.Clear();
-
             if (index == image_info_list.Count - 1)
             {
                 index = -1;
@@ -155,9 +151,43 @@ namespace face_detection_tool
             info_form.evaluationInfo(tp, fp);
         }
 
-        private void printErrorLogToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// evaluation for dataset
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void evaluateToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            int TP = 0;
+            int T = 0;
+            int P = 0;
+            double percision, recall;
+            process data_processing = new process();
+            data_processing.Show();
+            data_processing.progressBar1.Value = 0;
+            data_processing.progressBar1.Maximum = image_info_list.Count;
 
+            for (int i = 0; i < image_info_list.Count; i++)
+            {
+                if (image_info_list[i].DetectFrList == null)
+                {
+                    image_info_list[i].DetectFrList = io.getFrList(image_info_list[i].DetectFrPath);
+                }
+                if (image_info_list[i].GtFrList == null)
+                {
+                    image_info_list[i].GtFrList = io.getFrList(image_info_list[i].GtFrPath);
+                }
+                int tp = eval.singleImageMatch(image_info_list[i], 0.5);
+                TP += tp;
+                T += image_info_list[i].GtFrList.Count;
+                P += image_info_list[i].DetectFrList.Count;
+                data_processing.progressBar1.Value++;
+            }
+            data_processing.Close();
+            percision = Convert.ToDouble(TP) / Convert.ToDouble(P)*100;
+            recall = Convert.ToDouble(TP) / Convert.ToDouble(T)*100;
+            textBox1.Text = percision.ToString("0.00") + '%';
+            textBox2.Text = recall.ToString("0.00") + '%';
         }
     }
 }
