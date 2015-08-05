@@ -151,7 +151,7 @@ namespace FaceDetectionTool_WPF
                         .GetArea(tolerance, toleranceType);
                     var gu = Geometry.Combine(ds, gs, GeometryCombineMode.Union, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
-                    yield return new ShapeMatch() { iou = gi / gu, d_shape = dss, g_shape = gss };
+                    yield return new ShapeMatch() { IoU = gi / gu, D_Shape = dss, G_Shape = gss };
                 }
             }
         }
@@ -161,14 +161,14 @@ namespace FaceDetectionTool_WPF
             var list = new List<ShapeMatch>();
             var dss = new List<Shape>();
             var gss = new List<Shape>();
-            var ordered = GetIUAreas().Where(m => m.iou > value).OrderByDescending(m => m.iou);
+            var ordered = GetIUAreas().Where(m => m.IoU > value).OrderByDescending(m => m.IoU);
             foreach (var m in ordered)
             {
-                if (dss.Contains(m.d_shape) || gss.Contains(m.g_shape))
+                if (dss.Contains(m.D_Shape) || gss.Contains(m.G_Shape))
                     continue;
                 list.Add(m);
-                dss.Add(m.d_shape);
-                gss.Add(m.g_shape);
+                dss.Add(m.D_Shape);
+                gss.Add(m.G_Shape);
             }
             return list;
         }
@@ -186,9 +186,9 @@ namespace FaceDetectionTool_WPF
 
     public class ShapeMatch
     {
-        public double iou;
-        public Shape g_shape;
-        public Shape d_shape;
+        public double IoU;
+        public Shape G_Shape;
+        public Shape D_Shape;
     }
     public enum TypeE { Image, Detection, Gt }
 }

@@ -23,7 +23,7 @@
         </ScrollViewer>
         <Button x:Name="btnLast" Content="Last" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="50" Grid.Column="1" Click="btnLast_Click"/>
         <Button x:Name="btnNext" Content="Next" HorizontalAlignment="Right" Margin="0,30,10,0" VerticalAlignment="Top" Width="50" Grid.Column="1" Click="btnNext_Click"/>
-        <TextBox x:Name="tb_Result" Grid.Column="1" Margin="5,120,5,5" TextWrapping="Wrap" Text=""/>
-        <Button x:Name="button" Content="面积计算" Grid.Column="1" HorizontalAlignment="Center" Margin="0,80,0,0" VerticalAlignment="Top" Width="75" Click="Calc_Click"/>
+        <TextBox x:Name="tb_Result" Grid.Column="1" Margin="5,104,5,5" TextWrapping="Wrap" Text=""/>
+        <Button x:Name="button" Content="匹配结果" Grid.Column="1" HorizontalAlignment="Center" Margin="0,80,0,0" VerticalAlignment="Top" Width="75" Click="Calc_Click"/>
     </Grid>
 </Window>

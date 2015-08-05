@@ -120,13 +120,13 @@ namespace FaceDetectionTool_WPF
             var sw = new Stopwatch();
             sw.Start();
             var ms = imageInfoList[index].Matches;
-            tb_Result.Text = string.Join("\n", ms.Select(m => m.iou));
+            var str = string.Join("\n", ms.Select(m => m.IoU));
+            tb_Result.Text += $"{str}\n{sw.ElapsedMilliseconds}ms";
             sw.Stop();
-            tb_Result.Text += $"\n{sw.ElapsedMilliseconds}ms";
             foreach (var item in ms)
             {
-                item.d_shape.Fill = Brushes.Blue;
-                item.g_shape.Fill = Brushes.Red;
+                item.D_Shape.Fill = Brushes.Blue;
+                item.G_Shape.Fill = Brushes.Red;
             }
         }
     }
