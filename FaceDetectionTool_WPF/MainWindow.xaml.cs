@@ -87,8 +87,8 @@ namespace FaceDetectionTool_WPF
 
             if (ii.D_Shapes == null || ii.G_Shapes == null)
             {
-                ii.AddShapes(Brushes.Blue, TypeE.Detection);
-                ii.AddShapes(Brushes.Red, TypeE.Gt);
+                ii.AddShapes(Brushes.LightBlue, TypeE.Detection);
+                ii.AddShapes(Brushes.DeepPink, TypeE.Gt);
             }
             foreach (var item in ii.D_Shapes)
                 canvas.Children.Add(item);
@@ -119,9 +119,15 @@ namespace FaceDetectionTool_WPF
         {
             var sw = new Stopwatch();
             sw.Start();
-            tb_Result.Text = string.Join("\n", imageInfoList[index].Matches.Select(m => m.iou));
+            var ms = imageInfoList[index].Matches;
+            tb_Result.Text = string.Join("\n", ms.Select(m => m.iou));
             sw.Stop();
             tb_Result.Text += $"\n{sw.ElapsedMilliseconds}ms";
+            foreach (var item in ms)
+            {
+                item.d_shape.Fill = Brushes.Blue;
+                item.g_shape.Fill = Brushes.Red;
+            }
         }
     }
 }
