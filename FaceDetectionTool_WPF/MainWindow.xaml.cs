@@ -52,7 +52,6 @@ namespace FaceDetectionTool_WPF
             {
                 case Key.A: btnLast_Click(btnLast, null); break;
                 case Key.D: btnNext_Click(btnNext, null); break;
-                case Key.I: Info_Click(null, null); break;
             }
         }
 
@@ -88,6 +87,13 @@ namespace FaceDetectionTool_WPF
                 canvas.Children.Add(item);
             foreach (var item in ii.G_Shapes)
                 canvas.Children.Add(item);
+            foreach (var m in ii.Matches)
+            {
+                m.D_Shape.Fill = Brushes.Blue;
+                m.G_Shape.Fill = Brushes.Red;
+            }
+
+            spInfo.DataContext = ii;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -96,15 +102,6 @@ namespace FaceDetectionTool_WPF
             Default.WinHeight = ActualHeight;
             Default.Save();
             Application.Current.Shutdown();
-        }
-
-        private void Info_Click(object sender, RoutedEventArgs e)
-        {
-            if (imageInfoList == null)
-                return;
-            var info_win = new Info(imageInfoList[index]);
-            info_win.Owner = this;
-            info_win.Show();
         }
 
         private void Eval_Click(object sender, RoutedEventArgs e)
@@ -118,8 +115,8 @@ namespace FaceDetectionTool_WPF
             if (imageInfoList == null)
                 return;
             var p = imageInfoList.EvalRecallAndPrecision(sliderThr.Value);
-            tbRecall.Text = p.X.ToString("0.000");
-            tbPrecision.Text = p.Y.ToString("0.000");
+            tbRecall.Text = p.X.ToString("0.0000%");
+            tbPrecision.Text = p.Y.ToString("0.0000%");
         }
     }
 }

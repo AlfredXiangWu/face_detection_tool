@@ -33,7 +33,7 @@
         <Button Tag="{Binding ElementName=tb_IP}" Margin="0,40,10,0" Click="Button_Click"/>
         <Label Content="List File" Margin="10,115,0,0"/>
         <TextBox x:Name="tb_LF" Margin="10,150,10,0" Text="{Binding FrmList}"/>
-        <Button Tag="{Binding ElementName=tb_LF}" Margin="0,115,10,0" Click="Button_Click"/>
+        <Button Tag="{Binding ElementName=tb_LF}" Margin="0,115,10,0" Click="File_Click"/>
         <Label Content="Detection FR Path" Margin="10,190,0,0"/>
         <TextBox x:Name="tb_DFP" Margin="10,225,10,0" Text="{Binding FrmDetectionFrPath}"/>
         <Button Tag="{Binding ElementName=tb_DFP}" Margin="0,190,10,0" Click="Button_Click"/>

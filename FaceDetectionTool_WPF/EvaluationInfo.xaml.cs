@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Math;
 
 namespace FaceDetectionTool_WPF
 {
@@ -29,8 +30,10 @@ namespace FaceDetectionTool_WPF
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            var count = 20;
+            var count = 1000;
             var points = list.EvalPoints(count);
+            //var points = Evaluation.TestPoints(count, (x) => Sqrt(x));
+
             var g = new StreamGeometry();
             using (StreamGeometryContext context = g.Open())
             {
@@ -38,6 +41,7 @@ namespace FaceDetectionTool_WPF
                 foreach (var p in points.Skip(1))
                     context.LineTo(p, true, false);
             }
+            g.Transform = new ScaleTransform(canvas.Width, canvas.Height);
             var path = new Path() { Data = g, StrokeThickness = 1, Stroke = Brushes.Black };
             canvas.Children.Add(path);
         }

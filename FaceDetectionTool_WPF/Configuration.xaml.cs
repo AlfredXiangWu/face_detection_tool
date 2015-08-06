@@ -1,13 +1,13 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using FDialogResult = System.Windows.Forms.DialogResult;
-using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Xml.Serialization;
-using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Xml.Serialization;
+using FDialogResult = System.Windows.Forms.DialogResult;
+using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 
 namespace FaceDetectionTool_WPF
 {
@@ -33,6 +33,15 @@ namespace FaceDetectionTool_WPF
             fbd.Description = "Select Path";
             if (fbd.ShowDialog() == FDialogResult.OK)
                 textBox.Text = fbd.SelectedPath;
+        }
+
+        private void File_Click(object sender, RoutedEventArgs e)
+        {
+            var textBox = (TextBox)(((Button)sender).Tag);
+            var ofd = new OpenFileDialog();
+            ofd.Title = "Select File";
+            if (ofd.ShowDialog() == true)
+                textBox.Text = ofd.FileName;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

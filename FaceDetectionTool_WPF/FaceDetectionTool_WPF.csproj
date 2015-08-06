@@ -63,9 +63,6 @@
     <Compile Include="EvaluationInfo.xaml.cs">
       <DependentUpon>EvaluationInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Info.xaml.cs">
-      <DependentUpon>Info.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Src\Evaluation.cs" />
     <Compile Include="Src\ImageInfo.cs" />
     <Compile Include="Src\IO.cs" />
@@ -74,10 +71,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EvaluationInfo.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Info.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

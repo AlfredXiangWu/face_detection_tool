@@ -20,15 +20,31 @@ namespace FaceDetectionTool_WPF
             double p = list.Sum(i => i.FrList.Where(f => f[4] >= thr).Count());
             double t = list.Sum(i => i.GtList.Count);
             double tp = list.Sum(i => i.Matches.Where(m => m.prob >= thr).Count());
-            return new Point(tp / t * 100, tp / p * 100);
+            return new Point(tp / t, tp / p);
         }
 
         public static Point[] EvalPoints(this IEnumerable<ImageInfo> list, int count, double thrS = 0.5, double thrE = 1)
         {
-            var points = new Point[count];
+            var points = new Point[count + 1];
             var delta = (thrE - thrS) / count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i <= count; i++)
                 points[i] = list.EvalRecallAndPrecision(thrS + i * delta);
+            return points;
+        }
+
+        public static Point[] TestPoints(int count, Func<double, double> func)
+        {
+            var points = new Point[count + 1];
+            var delta = 1.0 / count;
+            for (int i = 0; i <= count; i++)
+            {
+                var x = 0 + i * delta;
+                var y = func(x);
+                if (double.IsNaN(y))
+                    continue;
+                points[i].X = x;
+                points[i].Y = y;
+            }
             return points;
         }
     }

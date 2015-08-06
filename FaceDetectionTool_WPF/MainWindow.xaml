@@ -9,26 +9,45 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="180"/>
         </Grid.ColumnDefinitions>
         <Menu x:Name="menu" Margin="0" VerticalAlignment="Top" Height="23" Grid.ColumnSpan="2">
             <MenuItem Header="File" Padding="6,3">
                 <MenuItem Header="New" Click="New_Click"/>
-                <MenuItem Header="Info" Click="Info_Click"/>
                 <MenuItem Header="EvalInfo" Click="Eval_Click"/>
             </MenuItem>
         </Menu>
         <ScrollViewer Margin="5,28,5,5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
             <Canvas x:Name="canvas"/>
         </ScrollViewer>
-        <Button x:Name="btnLast" Content="Last" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="50" Grid.Column="1" Click="btnLast_Click"/>
+        <Button x:Name="btnLast" Content="Last" HorizontalAlignment="Right" Margin="0,30,70,0" VerticalAlignment="Top" Width="50" Grid.Column="1" Click="btnLast_Click"/>
         <Button x:Name="btnNext" Content="Next" HorizontalAlignment="Right" Margin="0,30,10,0" VerticalAlignment="Top" Width="50" Grid.Column="1" Click="btnNext_Click"/>
         <Slider x:Name="sliderThr" Value="0.5" Minimum="0.5" Maximum="1"  Grid.Column="1" Margin="15,105,15,0" VerticalAlignment="Top" SmallChange="0.03" LargeChange="0.1" ValueChanged="sliderThr_ValueChanged" Height="20"/>
         <Label Content="Thr" Grid.Column="1" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Height="25"/>
         <TextBox Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,76,10,0" TextWrapping="Wrap" Text="{Binding ElementName=sliderThr,Path=Value,StringFormat=0.0000000,Mode=TwoWay}" VerticalAlignment="Top" Width="85" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         <Label Content="Precision" Grid.Column="1" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbPrecision" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,131,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="55"/>
+        <StackPanel x:Name="spInfo" Grid.Column="1" Margin="10,0,10,10" VerticalAlignment="Bottom">
+            <GroupBox Header="Image Path"  VerticalAlignment="Top">
+                <TextBox Text="{Binding Path}" TextWrapping="Wrap" Height="70"/>
+            </GroupBox>
+            <GroupBox Header="Image info" VerticalAlignment="Top" Margin="0,10">
+                <Grid>
+                    <Label Content="{Binding Bitmap.Width}" ContentStringFormat="width: {0}"  Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label Content="{Binding Bitmap.Height}" ContentStringFormat="height: {0}" Height="25" Margin="0,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox x:Name="groupBox1" Header="Detection info" VerticalAlignment="Top">
+                <Grid>
+                    <Label Content="{Binding FrList.Count}" ContentStringFormat="detection: {0}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label Content="{Binding GtList.Count}" ContentStringFormat="ground truth: {0}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,25,0,0"/>
+                    <Label Content="{Binding TP}" ContentStringFormat="TP: {0}" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                    <Label Content="{Binding FP}" ContentStringFormat="FP: {0}" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,25,0,0"/>
+                </Grid>
+            </GroupBox>
+        </StackPanel>
+        <TextBox x:Name="tbPrecision" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,131,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="85"/>
         <Label Content="Recall" Grid.Column="1" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbRecall" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,161,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="55"/>
+        <TextBox x:Name="tbRecall" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,161,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="85"/>
+
     </Grid>
 </Window>

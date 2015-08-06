@@ -5,16 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FaceDetectionTool_WPF"
         mc:Ignorable="d"
-        Title="EvaluationInfo" Height="332.794" Width="495.547">
+        Title="EvaluationInfo" Height="459.782" Width="503.43">
     <Grid>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
-        <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="202" Margin="29,71,0,0" VerticalAlignment="Top" Width="422"  RenderTransformOrigin="0.5 0.5" >
-            <!--<Line X1="0" Y1="0" X2="0" Y2="202" Stroke="Black"/>-->
-            <!--<Line X1="0" Y1="202" X2="422" Y2="202" Stroke="Black"/>-->
-            <Canvas.RenderTransform>
-                <ScaleTransform ScaleY="-1"/>
-            </Canvas.RenderTransform>
-        </Canvas>
-
+        <Button Content="Draw" HorizontalAlignment="Left" Margin="415,10,0,0" VerticalAlignment="Top" Width="60" Click="button_Click"/>
+        <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="394" Height="394" Padding="20">
+            <Canvas x:Name="canvas" Margin="0"  RenderTransformOrigin="0.5 0.5" Width="350" Height="350">
+                <Canvas.RenderTransform>
+                    <ScaleTransform ScaleY="-1"/>
+                </Canvas.RenderTransform>
+                <Line X1="0" Y1="0" X2="0" Y2="350" Stroke="Blue" StrokeThickness="1"/>
+                <Line X1="0" Y1="0" X2="350" Y2="0" Stroke="Blue" StrokeThickness="1"/>
+            </Canvas>
+        </Border>
+        <Label  Content="1.00" HorizontalAlignment="Left" Margin="368,385,0,0" VerticalAlignment="Top" Padding="0"/>
+        <Label  Content="recall" HorizontalAlignment="Left" Margin="191,385,0,0" VerticalAlignment="Top" Padding="0"/>
+        <Label  Content="0" HorizontalAlignment="Left" Margin="19,385,0,0" VerticalAlignment="Top" Padding="0"/>
+        <Label  Content="1.00" HorizontalAlignment="Left" Margin="30,20,0,0" VerticalAlignment="Top" Padding="0">
+            <Label.RenderTransform>
+                <RotateTransform Angle="90"/>
+            </Label.RenderTransform>
+        </Label>
+        <Label  Content="precision" HorizontalAlignment="Left" Margin="30,180,0,0" VerticalAlignment="Top" Padding="0">
+            <Label.RenderTransform>
+                <RotateTransform Angle="90"/>
+            </Label.RenderTransform>
+        </Label>
     </Grid>
 </Window>
