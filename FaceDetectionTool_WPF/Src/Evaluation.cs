@@ -28,9 +28,28 @@ namespace FaceDetectionTool_WPF
             var points = new Point[count + 1];
             var delta = (thrE - thrS) / count;
 
+            double t = list.Sum(i => i.GtList.Count);
+            var frlist = list.SelectMany(ii => ii.FrList.Select(f => f[4])).Where(d => d >= 0.5).ToArray();
+            var tplist = list.SelectMany(ii => ii.Matches.Select(m => m.Prob)).Where(d => d >= 0.5).ToArray();
+            Array.Sort(frlist);
+            Array.Sort(tplist);
+
+            double frCount = frlist.Length;
+            double tpCount = tplist.Length;
+            int frIndex = 0;
+            int tpIndex = 0;
+
             for (int i = 0; i <= count; i++)
-                points[i] = list.EvalRecallAndPrecision(thrS + i * delta);
-            //Parallel.For(0, count, (i) => points[i] = list.EvalRecallAndPrecision(thrS + i * delta));
+            {
+                var thr = thrS + i * delta;
+                for (; frIndex < frCount; frIndex++)
+                    if (frlist[frIndex] >= thr)
+                        break;
+                for (; tpIndex < tpCount; tpIndex++)
+                    if (tplist[tpIndex] >= thr)
+                        break;
+                points[i] = new Point((tpCount - tpIndex) / t, (tpCount - tpIndex) / (frCount - frIndex));
+            };
             return points;
         }
 
