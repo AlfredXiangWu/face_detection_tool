@@ -36,10 +36,12 @@
             this.evaluateToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.prToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.printErrorLogToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -49,7 +51,8 @@
             this.evaluateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rOCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printErrorLogToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateValidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -58,15 +61,14 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.toolToolStripMenuItem,
+            this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, -3);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(47, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(193, 25);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -129,6 +131,11 @@
             this.printErrorLogToolStripMenuItem2.Text = "Print Error Log";
             this.printErrorLogToolStripMenuItem2.Click += new System.EventHandler(this.printErrorLogToolStripMenuItem2_Click);
             // 
+            // toolToolStripMenuItem
+            // 
+            this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
+            this.toolToolStripMenuItem.Size = new System.Drawing.Size(12, 21);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -180,6 +187,14 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Evaluation";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(99, 23);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.Size = new System.Drawing.Size(65, 21);
+            this.textBox3.TabIndex = 6;
             // 
             // textBox2
             // 
@@ -235,28 +250,32 @@
             // evaluateToolStripMenuItem
             // 
             this.evaluateToolStripMenuItem.Name = "evaluateToolStripMenuItem";
-            this.evaluateToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.evaluateToolStripMenuItem.Text = "Evaluate";
+            this.evaluateToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // rOCToolStripMenuItem
             // 
             this.rOCToolStripMenuItem.Name = "rOCToolStripMenuItem";
-            this.rOCToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.rOCToolStripMenuItem.Text = "ROC";
+            this.rOCToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // printErrorLogToolStripMenuItem1
             // 
             this.printErrorLogToolStripMenuItem1.Name = "printErrorLogToolStripMenuItem1";
-            this.printErrorLogToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
-            this.printErrorLogToolStripMenuItem1.Text = "Print Error Log";
+            this.printErrorLogToolStripMenuItem1.Size = new System.Drawing.Size(32, 19);
             // 
-            // textBox3
+            // editToolStripMenuItem
             // 
-            this.textBox3.Location = new System.Drawing.Point(99, 23);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(65, 21);
-            this.textBox3.TabIndex = 6;
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generateValidToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(42, 21);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // generateValidToolStripMenuItem
+            // 
+            this.generateValidToolStripMenuItem.Name = "generateValidToolStripMenuItem";
+            this.generateValidToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.generateValidToolStripMenuItem.Text = "Generate Valid";
+            this.generateValidToolStripMenuItem.Click += new System.EventHandler(this.generateValidToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -306,6 +325,9 @@
         private System.Windows.Forms.ToolStripMenuItem prToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem printErrorLogToolStripMenuItem2;
         private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.ToolStripMenuItem toolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateValidToolStripMenuItem;
     }
 }
 

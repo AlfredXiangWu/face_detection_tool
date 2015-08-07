@@ -14,6 +14,8 @@ namespace face_detection_tool
         /// </summary>
         public string FrmImagePath { get; set; }
 
+        
+
         /// <summary>
         /// List File 
         /// </summary>
@@ -43,7 +45,8 @@ namespace face_detection_tool
                 ImageInfo image_info = new ImageInfo();
                 var name = txt.ReadLine();
                 image_info.ImgPath = Path.Combine(FrmImagePath, name);
-                var tmp = name.Split('.')[0];
+                image_info.RelativeImgPath = name.Split('.')[0];
+                var tmp = image_info.RelativeImgPath;
                 image_info.DetectFrPath = Path.Combine(FrmDetectionFrPath, tmp + ".fr");
                 image_info.GtFrPath = Path.Combine(FrmGtFrPath, tmp + ".fr");
                 list.Add(image_info);

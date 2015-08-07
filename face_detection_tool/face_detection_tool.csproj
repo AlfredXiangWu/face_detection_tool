@@ -62,6 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="winform\GenValidForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="winform\GenValidForm.Designer.cs">
+      <DependentUpon>GenValidForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="winform\pr.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="winform\GenValidForm.resx">
+      <DependentUpon>GenValidForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="winform\pr.resx">
       <DependentUpon>pr.cs</DependentUpon>
     </EmbeddedResource>

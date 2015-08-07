@@ -8,9 +8,14 @@ namespace face_detection_tool
     public class ImageInfo
     {
         /// <summary>
-        /// Image Path
+        /// Absolute Image Path
         /// </summary>
         public string ImgPath { get; set; }
+
+        /// <summary>
+        /// Relative Image Path
+        /// </summary>
+        public string RelativeImgPath { get; set; }
 
         /// <summary>
         /// Detection FR Path

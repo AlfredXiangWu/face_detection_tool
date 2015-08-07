@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing.Imaging;
 
 namespace face_detection_tool
 {
@@ -17,6 +18,7 @@ namespace face_detection_tool
         private Evaluation eval = new Evaluation();
         private int index = 0;
         private Bitmap img;
+        
 
 
         public Form1()
@@ -56,7 +58,11 @@ namespace face_detection_tool
             }
         }
 
-
+        /// <summary>
+        /// Configuration Form OK button trigger
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void new_configuration_accept(object sender, EventArgs e)
         {
             Configuration new_configuration = (Configuration)sender;
@@ -305,6 +311,140 @@ namespace face_detection_tool
             textBox1.Text = precision.ToString("0.00") + '%';
             textBox2.Text = recall.ToString("0.00") + '%';
         }
+
+        /// <summary>
+        /// Generate images including face and non-face patch to construct the validation set
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void generateValidToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenValidForm gen_valid_form = new GenValidForm();
+            gen_valid_form.Show();
+            gen_valid_form.accept += new EventHandler(gen_valid_form_accept);
+        }
+
+        private void gen_valid_form_accept(object sender, EventArgs e)
+        {
+            // get information of validation set
+            string valid_image_save_path;
+            string valid_image_list;
+            GenValidForm gen_valid_form = (GenValidForm)sender;
+            valid_image_save_path = gen_valid_form.image_save_path;
+            valid_image_list = gen_valid_form.list_filename;
+            gen_valid_form.Close();
+
+            // 
+            process data_processing = new process();
+            data_processing.Show();
+            data_processing.progressBar1.Value = 0;
+            data_processing.progressBar1.Maximum = image_info_list.Count;
+
+            // crop and save images
+            double xtl, ytl,  width, height;
+            Bitmap original_image;
+            string list_path = valid_image_save_path + "\\" + valid_image_list+".txt";
+            FileStream list = new FileStream(list_path, FileMode.OpenOrCreate);
+            StreamWriter sw = new StreamWriter(list);
+
+            for (int i = 0; i < image_info_list.Count; i++)
+            {
+                data_processing.progressBar1.Value++;
+                if (image_info_list[i].DetectFrList == null)
+                {
+                    image_info_list[i].DetectFrList = io.getFrList(image_info_list[i].DetectFrPath);
+                }
+                if (image_info_list[i].GtFrList == null)
+                {
+                    image_info_list[i].GtFrList = io.getFrList(image_info_list[i].GtFrPath);
+                }
+
+                eval.singleImageMatch(image_info_list[i], 0.05);
+
+                original_image = new Bitmap(image_info_list[i].ImgPath);
+                string save_path;
+                string save_path_name;
+
+                // positive sample
+                for (int j = 0; j < image_info_list[i].GtFrList.Count; j++)
+                {
+                    if (image_info_list[i].GtFrList[j].Length == 5)
+                    {
+                        xtl = image_info_list[i].GtFrList[j][3] - image_info_list[i].GtFrList[j][0];
+                        ytl = image_info_list[i].GtFrList[j][4] - image_info_list[i].GtFrList[j][0];
+                        width = image_info_list[i].GtFrList[j][0]  * 2;
+                        height = image_info_list[i].GtFrList[j][0]  * 2;
+                    }
+                    else
+                    {
+                        xtl = image_info_list[i].GtFrList[j][0];
+                        ytl = image_info_list[i].GtFrList[j][1];
+                        width = image_info_list[i].GtFrList[j][2] - xtl + 1;
+                        height = image_info_list[i].GtFrList[j][3] - ytl + 1;
+                    }
+                    Rectangle rect = new Rectangle(Convert.ToInt32(xtl), Convert.ToInt32(ytl), Convert.ToInt32(width), Convert.ToInt32(height));
+                    Bitmap crop = crop_image(original_image, rect);
+                    string line = "pos\\" + image_info_list[i].RelativeImgPath + '_' + j.ToString() + ".jpg";
+
+                    save_path_name = Path.Combine(valid_image_save_path+"\\", line);
+                    save_path = Path.GetDirectoryName(save_path_name).ToString();
+                    if (Directory.Exists(save_path) == false)
+                    {
+                        Directory.CreateDirectory(save_path);
+                    }
+                    crop.Save(save_path_name, ImageFormat.Jpeg);
+
+                    line.Replace('\\', '/');
+                    sw.WriteLine(line + " 1");
+                }
+
+                // negative samples
+                for (int j = 0; j < image_info_list[i].DetectFrList.Count; j++)
+                {
+                    if (image_info_list[i].Scores[j] < 0.05)
+                    {
+                        xtl = image_info_list[i].DetectFrList[j][0];
+                        ytl = image_info_list[i].DetectFrList[j][1];
+                        width = image_info_list[i].DetectFrList[j][2] - xtl + 1;
+                        height = image_info_list[i].DetectFrList[j][3] - ytl + 1;
+
+                        Rectangle rect = new Rectangle(Convert.ToInt32(xtl), Convert.ToInt32(ytl), Convert.ToInt32(width), Convert.ToInt32(height));
+                        Bitmap crop = crop_image(original_image, rect);
+                        string line = "neg\\" + image_info_list[i].RelativeImgPath + '_' + j.ToString() + ".jpg";
+
+                        save_path_name = Path.Combine(valid_image_save_path + "\\", line);
+                        save_path = Path.GetDirectoryName(save_path_name).ToString();
+                        if (Directory.Exists(save_path) == false)
+                        {
+                            Directory.CreateDirectory(save_path);
+                        }
+                        crop.Save(save_path_name, ImageFormat.Jpeg);
+
+                        line.Replace('\\', '/');
+                        sw.WriteLine(line + " 0");
+                    }
+                }
+            }
+
+            sw.Close();
+            list.Close();
+        }
+
+        /// <summary>
+        ///     Crop patch from image based on rectangle
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="rect"></param>
+        /// <returns></returns>
+        private Bitmap crop_image(Image image, Rectangle rect)
+        {
+            Bitmap crop = new Bitmap(rect.Width, rect.Height, PixelFormat.Format24bppRgb);
+            Graphics g = Graphics.FromImage(crop);
+            g.DrawImage(image, 0, 0, rect, GraphicsUnit.Pixel);
+            g.Dispose();
+            return crop;
+        }
+        
     }
 
 
