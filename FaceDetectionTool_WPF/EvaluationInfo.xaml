@@ -29,7 +29,7 @@
             </Label.RenderTransform>
         </Label>
         <TextBox x:Name="tbCount" Height="19" Margin="415,10,10,0" TextWrapping="Wrap" Text="5000" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Label x:Name="lTime" Content="Label" Margin="415,60,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label x:Name="lTime" Content="time" Margin="415,60,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <Button Content="Clear" Margin="415,95,10,0" VerticalAlignment="Top" Width="60" Click="clear_Click"/>
     </Grid>
 </Window>
