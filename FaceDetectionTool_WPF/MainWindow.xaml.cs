@@ -32,6 +32,7 @@ namespace FaceDetectionTool_WPF
         ImagePath imagePath = new ImagePath();
         private List<ImageInfo> imageInfoList;
         private int index = 0;
+        private ImageSource img;
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
@@ -76,9 +77,9 @@ namespace FaceDetectionTool_WPF
             if (imageInfoList.Count == 0)
                 return;
             var ii = imageInfoList[index];
-
             canvas.Children.Clear();
-            var image = new Image() { Source = ii.Bitmap };
+            img = ii.Bitmap;
+            var image = new Image() { Source = img };
             canvas.Width = image.Width;
             canvas.Height = image.Height;
             canvas.Children.Add(image);
@@ -90,9 +91,11 @@ namespace FaceDetectionTool_WPF
             foreach (var m in ii.Matches)
             {
                 m.D_Shape.Fill = Brushes.Blue;
+                m.D_Shape.Opacity = 0.5;
                 m.G_Shape.Fill = Brushes.Red;
+                m.G_Shape.Opacity = 0.5;
             }
-
+            bd_SizeChanged(null, null);
             spInfo.DataContext = ii;
         }
 
@@ -117,6 +120,16 @@ namespace FaceDetectionTool_WPF
             var p = imageInfoList.EvalRecallAndPrecision(sliderThr.Value);
             tbRecall.Text = p.X.ToString("0.0000%");
             tbPrecision.Text = p.Y.ToString("0.0000%");
+        }
+
+        private void bd_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (img == null)
+                return;
+            var ir = img.Width / img.Height;
+            var sr = bd.ActualWidth / bd.ActualHeight;
+            var r = ir > sr ? bd.ActualWidth / img.Width : bd.ActualHeight / img.Height;
+            canvas.RenderTransform = new ScaleTransform(r, r);
         }
     }
 }

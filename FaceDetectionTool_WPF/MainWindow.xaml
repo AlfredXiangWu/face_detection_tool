@@ -17,9 +17,9 @@
                 <MenuItem Header="EvalInfo" Click="Eval_Click"/>
             </MenuItem>
         </Menu>
-        <ScrollViewer Margin="5,28,5,5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+        <Border x:Name="bd" Margin="5,28,5,5" SizeChanged="bd_SizeChanged">
             <Canvas x:Name="canvas"/>
-        </ScrollViewer>
+        </Border>
         <Button x:Name="btnLast" Content="Last" HorizontalAlignment="Right" Margin="0,30,70,0" VerticalAlignment="Top" Width="50" Grid.Column="1" Click="btnLast_Click"/>
         <Button x:Name="btnNext" Content="Next" HorizontalAlignment="Right" Margin="0,30,10,0" VerticalAlignment="Top" Width="50" Grid.Column="1" Click="btnNext_Click"/>
         <Slider x:Name="sliderThr" Value="0.5" Minimum="0.5" Maximum="1"  Grid.Column="1" Margin="15,105,15,0" VerticalAlignment="Top" SmallChange="0.03" LargeChange="0.1" ValueChanged="sliderThr_ValueChanged" Height="20"/>

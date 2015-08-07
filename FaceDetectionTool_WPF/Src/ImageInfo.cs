@@ -47,10 +47,11 @@ namespace FaceDetectionTool_WPF
         public int TP => Matches.Count;
         public int FP => FrList.Count - TP;
 
-        public bool AddShapes(Brush color, TypeE type, double opacity = 0.5)
+        public bool AddShapes(Brush color, TypeE type, double opacity = 1)
         {
             try
             {
+                var st = 4;
                 double xtl, ytl, width, height;
                 switch (type)
                 {
@@ -69,8 +70,9 @@ namespace FaceDetectionTool_WPF
                                 var rt = new ShapePath()
                                 {
                                     Data = g_rt,
-                                    Fill = color,
                                     Opacity = opacity,
+                                    Stroke = color,
+                                    StrokeThickness = st,
                                     Tag = g_rt,
                                 };
                                 D_Shapes.Add(rt);
@@ -102,7 +104,8 @@ namespace FaceDetectionTool_WPF
                                     var el = new ShapePath()
                                     {
                                         Data = g_el,
-                                        Fill = color,
+                                        Stroke = color,
+                                        StrokeThickness = st,
                                         Opacity = opacity,
                                         Tag = g_el,
                                     };
@@ -119,7 +122,8 @@ namespace FaceDetectionTool_WPF
                                     var rt = new ShapePath()
                                     {
                                         Data = g_rt,
-                                        Fill = color,
+                                        Stroke = color,
+                                        StrokeThickness = st,
                                         Opacity = opacity,
                                         Tag = g_rt,
                                     };
@@ -144,9 +148,9 @@ namespace FaceDetectionTool_WPF
         public void ShapesPrepare()
         {
             if (D_Shapes == null)
-                AddShapes(Brushes.LightBlue, TypeE.Detection);
+                AddShapes(Brushes.Blue, TypeE.Detection);
             if (G_Shapes == null)
-                AddShapes(Brushes.DeepPink, TypeE.Gt);
+                AddShapes(Brushes.Red, TypeE.Gt);
         }
 
         public IEnumerable<ShapeMatch> GetAllCouples(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative)
@@ -165,7 +169,7 @@ namespace FaceDetectionTool_WPF
                     var gu = Geometry.Combine(ds, gs, GeometryCombineMode.Union, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
                     if (gi / gu > 0.5)
-                        yield return new ShapeMatch() { IoU = gi / gu, D_Shape = dss, G_Shape = gss, prob = FrList[j][4] };
+                        yield return new ShapeMatch() { IoU = gi / gu, D_Shape = dss, G_Shape = gss, Prob = FrList[j][4] };
                 }
             }
         }
@@ -203,7 +207,7 @@ namespace FaceDetectionTool_WPF
         public double IoU;
         public Shape G_Shape;
         public Shape D_Shape;
-        public double prob;
+        public double Prob;
     }
     public enum TypeE { Image, Detection, Gt }
 }

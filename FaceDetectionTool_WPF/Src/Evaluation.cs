@@ -19,7 +19,7 @@ namespace FaceDetectionTool_WPF
         {
             double p = list.Sum(i => i.FrList.Where(f => f[4] >= thr).Count());
             double t = list.Sum(i => i.GtList.Count);
-            double tp = list.Sum(i => i.Matches.Where(m => m.prob >= thr).Count());
+            double tp = list.Sum(i => i.Matches.Where(m => m.Prob >= thr).Count());
             return new Point(tp / t, tp / p);
         }
 
@@ -27,8 +27,10 @@ namespace FaceDetectionTool_WPF
         {
             var points = new Point[count + 1];
             var delta = (thrE - thrS) / count;
+
             for (int i = 0; i <= count; i++)
                 points[i] = list.EvalRecallAndPrecision(thrS + i * delta);
+            //Parallel.For(0, count, (i) => points[i] = list.EvalRecallAndPrecision(thrS + i * delta));
             return points;
         }
 
