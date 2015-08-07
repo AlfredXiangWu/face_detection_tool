@@ -370,10 +370,10 @@ namespace face_detection_tool
                 {
                     if (image_info_list[i].GtFrList[j].Length == 5)
                     {
-                        xtl = image_info_list[i].GtFrList[j][3] - image_info_list[i].GtFrList[j][0];
-                        ytl = image_info_list[i].GtFrList[j][4] - image_info_list[i].GtFrList[j][0];
-                        width = image_info_list[i].GtFrList[j][0]  * 2;
-                        height = image_info_list[i].GtFrList[j][0]  * 2;
+                        xtl = image_info_list[i].GtFrList[j][3] - image_info_list[i].GtFrList[j][0] * 0.8;
+                        ytl = image_info_list[i].GtFrList[j][4] - image_info_list[i].GtFrList[j][0] * 0.8;
+                        width = image_info_list[i].GtFrList[j][0]  * 2*0.8;
+                        height = image_info_list[i].GtFrList[j][0]  * 2*0.8;
                     }
                     else
                     {
@@ -424,8 +424,10 @@ namespace face_detection_tool
                         sw.WriteLine(line + " 0");
                     }
                 }
+                original_image.Dispose();
             }
 
+            data_processing.Close();
             sw.Close();
             list.Close();
         }
