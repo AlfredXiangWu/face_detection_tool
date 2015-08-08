@@ -34,9 +34,8 @@ namespace FaceDetectionTool_WPF
             var sw = new Stopwatch();
             sw.Start();
 
-            var count = int.Parse(tbCount.Text);
-            var points = list.EvalPoints(count);
-            //var points = Evaluation.TestPoints(count, (x) => Sqrt(x));
+            var points = list.EvalPoints();
+            lbCount.Content = "points: " + points.Length.ToString();
 
             var g = new StreamGeometry();
             using (StreamGeometryContext context = g.Open())
@@ -50,7 +49,7 @@ namespace FaceDetectionTool_WPF
             canvas.Children.Add(path);
 
             sw.Stop();
-            lTime.Content = sw.ElapsedMilliseconds.ToString() + "ms";
+            lbTime.Content = "time: " + sw.ElapsedMilliseconds.ToString() + "ms";
         }
 
         private void canvas_Loaded(object sender, RoutedEventArgs e)

@@ -53,6 +53,7 @@ namespace FaceDetectionTool_WPF
             {
                 case Key.A: btnLast_Click(btnLast, null); break;
                 case Key.D: btnNext_Click(btnNext, null); break;
+                case Key.E:Eval_Click(null, null);break;
             }
         }
 

@@ -23,30 +23,31 @@ namespace FaceDetectionTool_WPF
             return new Point(tp / t, tp / p);
         }
 
-        public static Point[] EvalPoints(this IEnumerable<ImageInfo> list, int count, double thrS = 0.5, double thrE = 1)
+        public static Point[] EvalPoints(this IEnumerable<ImageInfo> list)
         {
-            var points = new Point[count + 1];
-            var delta = (thrE - thrS) / count;
-
             double t = list.Sum(i => i.GtList.Count);
+
             var frlist = list.SelectMany(ii => ii.FrList.Select(f => f[4])).Where(d => d >= 0.5).ToArray();
             var tplist = list.SelectMany(ii => ii.Matches.Select(m => m.Prob)).Where(d => d >= 0.5).ToArray();
+            var thrlist = frlist.Union(tplist).ToArray(); ;
             Array.Sort(frlist);
             Array.Sort(tplist);
+            Array.Sort(thrlist);
+
+            var points = new Point[thrlist.Length];
 
             double frCount = frlist.Length;
             double tpCount = tplist.Length;
             int frIndex = 0;
             int tpIndex = 0;
 
-            for (int i = 0; i <= count; i++)
+            for (int i = 0; i < thrlist.Length; i++)
             {
-                var thr = thrS + i * delta;
                 for (; frIndex < frCount; frIndex++)
-                    if (frlist[frIndex] >= thr)
+                    if (frlist[frIndex] >= thrlist[i])
                         break;
                 for (; tpIndex < tpCount; tpIndex++)
-                    if (tplist[tpIndex] >= thr)
+                    if (tplist[tpIndex] >= thrlist[i])
                         break;
                 points[i] = new Point((tpCount - tpIndex) / t, (tpCount - tpIndex) / (frCount - frIndex));
             };
