@@ -1,8 +1,10 @@
 # face detection tool
 Face detection tool is a winform program for analyzing and evaluating the face detection results.<br>
 
+## Usage:<br>
 
-To do:<br>
+
+##To do:<br>
 ~~1. Read image list and show image~~<br>
 ~~2. Draw the ground truth~~<br>
 * ~~Draw rectangle bounding box (AFW)~~<br>

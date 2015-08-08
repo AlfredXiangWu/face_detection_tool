@@ -99,14 +99,14 @@ namespace face_detection_tool
             {
                 this.textBox2.Text = "Z:\\User\\wuxiang\\data\\AFW\\testimages";
                 this.textBox3.Text = "Z:\\User\\wuxiang\\data\\AFW\\list_afw.txt";
-                this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\AFW";
+                this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\DeepDetector\\DeepDetector0.3\\DeepDetector0.3.11.1\\result\\AFW";
                 this.textBox7.Text = "Z:\\User\\wuxiang\\data\\AFW\\gt";
             }
             else if (comboBox1.Text == "FDDB")
             {
                 this.textBox2.Text = "Z:\\User\\wuxiang\\data\\FDDB\\originalPics";
                 this.textBox3.Text = "Z:\\User\\wuxiang\\data\\FDDB\\FDDB_list.txt";
-                this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\FDDB";
+                this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\DeepDetector\\DeepDetector0.3\\DeepDetector0.3.11.1\\result\\FDDB";
                 this.textBox7.Text = "Z:\\User\\wuxiang\\data\\FDDB\\gt";
             }
             else

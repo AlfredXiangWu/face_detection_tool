@@ -393,9 +393,7 @@ namespace face_detection_tool
                         Directory.CreateDirectory(save_path);
                     }
                     crop.Save(save_path_name, ImageFormat.Jpeg);
-
-                    line.Replace('\\', '/');
-                    sw.WriteLine(line + " 1");
+                    sw.WriteLine(line.Replace('\\', '/') + " 1");
                 }
 
                 // negative samples
@@ -419,9 +417,7 @@ namespace face_detection_tool
                             Directory.CreateDirectory(save_path);
                         }
                         crop.Save(save_path_name, ImageFormat.Jpeg);
-
-                        line.Replace('\\', '/');
-                        sw.WriteLine(line + " 0");
+                        sw.WriteLine(line.Replace('\\', '/') + " 0");
                     }
                 }
                 original_image.Dispose();
@@ -448,7 +444,6 @@ namespace face_detection_tool
         }
         
     }
-
 
 
 }
