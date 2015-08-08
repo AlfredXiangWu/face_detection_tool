@@ -17,6 +17,8 @@ namespace FaceDetectionTool_WPF
     {
         public string Path { get; set; }
 
+        public string RelativeImgPath { get; set; }
+
         public string PathGt { get; set; }
 
         private List<double[]> gtList;
@@ -153,7 +155,7 @@ namespace FaceDetectionTool_WPF
                 AddShapes(Brushes.Red, TypeE.Gt);
         }
 
-        public IEnumerable<ShapeMatch> GetAllCouples(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative)
+        public IEnumerable<ShapeMatch> GetAllCouples(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative, double thr = 0.5)
         {
             ShapesPrepare();
             for (int i = 0; i < G_Shapes.Count; i++)
@@ -168,8 +170,8 @@ namespace FaceDetectionTool_WPF
                         .GetArea(tolerance, toleranceType);
                     var gu = Geometry.Combine(ds, gs, GeometryCombineMode.Union, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
-                    if (gi / gu > 0.5)
-                        yield return new ShapeMatch() { IoU = gi / gu, D_Shape = dss, G_Shape = gss, Prob = FrList[j][4] };
+                    if (gi / gu > thr)
+                        yield return new ShapeMatch() { IoU = gi / gu, FrIndex = j, D_Shape = dss, G_Shape = gss, Prob = FrList[j][4] };
                 }
             }
         }
@@ -208,6 +210,7 @@ namespace FaceDetectionTool_WPF
         public Shape G_Shape;
         public Shape D_Shape;
         public double Prob;
+        public int FrIndex;
     }
     public enum TypeE { Image, Detection, Gt }
 }

@@ -51,6 +51,7 @@ namespace FaceDetectionTool_WPF
                 var imageInfo = new ImageInfo();
                 imageInfo.Path = Path.Combine(FrmImagePath, line);
                 var name = line.Substring(0, line.LastIndexOf('.'));
+                imageInfo.RelativeImgPath = name;
                 imageInfo.PathFr = Path.Combine(FrmDetectionFrPath, name + ".fr");
                 imageInfo.PathGt = Path.Combine(FrmGtFrPath, name + ".fr");
                 list.Add(imageInfo);

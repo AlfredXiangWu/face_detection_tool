@@ -30,7 +30,7 @@ namespace FaceDetectionTool_WPF
         }
 
         ImagePath imagePath = new ImagePath();
-        private List<ImageInfo> imageInfoList;
+        public List<ImageInfo> imageInfoList;
         private int index = 0;
         private ImageSource img;
 
@@ -110,7 +110,7 @@ namespace FaceDetectionTool_WPF
 
         private void Eval_Click(object sender, RoutedEventArgs e)
         {
-            var win = new EvaluationInfo(imageInfoList);
+            var win = new EvaluationInfo(this);
             win.Show();
         }
 
@@ -131,6 +131,12 @@ namespace FaceDetectionTool_WPF
             var sr = bd.ActualWidth / bd.ActualHeight;
             var r = ir > sr ? bd.ActualWidth / img.Width : bd.ActualHeight / img.Height;
             canvas.RenderTransform = new ScaleTransform(r, r);
+        }
+
+        private void GenValid_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new GenValid(this);
+            win.Show();
         }
     }
 }

@@ -16,6 +16,9 @@
                 <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="EvalInfo" Click="Eval_Click"/>
             </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="GenValid" Click="GenValid_Click"/>
+            </MenuItem>
         </Menu>
         <Border x:Name="bd" Margin="5,28,5,5" SizeChanged="bd_SizeChanged">
             <Canvas x:Name="canvas"/>

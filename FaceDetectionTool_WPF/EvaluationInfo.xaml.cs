@@ -21,20 +21,20 @@ namespace FaceDetectionTool_WPF
     /// </summary>
     public partial class EvaluationInfo : Window
     {
-        public EvaluationInfo(List<ImageInfo> list)
+        public EvaluationInfo(MainWindow win)
         {
             InitializeComponent();
-            this.list = list;
+            this.win = win;
         }
 
-        private List<ImageInfo> list;
+        private MainWindow win;
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             var sw = new Stopwatch();
             sw.Start();
 
-            var points = list.EvalPoints();
+            var points = win.imageInfoList.EvalPoints();
             lbCount.Content = "points: " + points.Length.ToString();
 
             var g = new StreamGeometry();

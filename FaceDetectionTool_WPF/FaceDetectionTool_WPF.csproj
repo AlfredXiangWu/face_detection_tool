@@ -63,6 +63,9 @@
     <Compile Include="EvaluationInfo.xaml.cs">
       <DependentUpon>EvaluationInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GenValid.xaml.cs">
+      <DependentUpon>GenValid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Evaluation.cs" />
     <Compile Include="Src\ImageInfo.cs" />
     <Compile Include="Src\IO.cs" />
@@ -71,6 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EvaluationInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GenValid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
