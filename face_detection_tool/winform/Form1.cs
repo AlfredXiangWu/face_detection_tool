@@ -72,6 +72,7 @@ namespace face_detection_tool
             evaluationToolStripMenuItem.Enabled = true;
 
             io = new_configuration.io;
+            index = 0;
             image_info_list = io.getImageInfo();
 
             showImage();

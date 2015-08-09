@@ -15,6 +15,7 @@ Face detection tool is a winform program for analyzing and evaluating the face d
 ~~5. Compute precision and recall for dataset~~<br>
 6. Print error log (the image which contains too many false positive detection results)<br>
 ~~7. Get info of each image~~<br>
+8. Compare between two version detection results.
 
 
 # Thanks!
