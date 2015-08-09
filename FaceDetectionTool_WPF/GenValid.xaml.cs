@@ -1,17 +1,9 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using FDialogResult = System.Windows.Forms.DialogResult;
 using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 
@@ -46,7 +38,8 @@ namespace FaceDetectionTool_WPF
             pb.Value = 0;
             var dir = tbDir.Text;
             var file = tbFile.Text;
-            var indexList = il.Select(ii => ii.GetAllCouples(thr: 0.05).Select(m => m.FrIndex).ToArray()).ToArray();
+            btnDo.IsEnabled = false;
+            var indexlist = il.Select(ii => ii.GetMatches(thr: 0.05).Select(m => m.FrIndex).ToArray()).ToArray();
             await Task.Run(() =>
             {
                 double xtl, ytl, width, height;
@@ -76,7 +69,7 @@ namespace FaceDetectionTool_WPF
                         }
                         var rect = new Rectangle((int)xtl, (int)ytl, (int)width, (int)height);
                         Bitmap crop = crop_image(bitmap, rect);
-                        string line = $"pos\\{ii.RelativeImgPath }_{j}.jpg";
+                        string line = $"pos\\{ii.RelativeImgPath}_{j}.jpg";
 
                         var save_path_name = Path.Combine(dir, line);
                         var save_path = Path.GetDirectoryName(save_path_name);
@@ -87,11 +80,10 @@ namespace FaceDetectionTool_WPF
                         crop.Dispose();
                         sw.WriteLine(line.Replace('\\', '/') + " 1");
                     }
-
                     // negative samples
                     for (int j = 0; j < ii.FrList.Count; j++)
                     {
-                        if (indexList[i].Contains(j))
+                        if (indexlist[i].Contains(j))
                             continue;
                         xtl = ii.FrList[j][0];
                         ytl = ii.FrList[j][1];
@@ -115,6 +107,7 @@ namespace FaceDetectionTool_WPF
                 sw.Close();
             });
             MessageBox.Show("Done");
+            btnDo.IsEnabled = true;
         }
 
         private Bitmap crop_image(Image image, Rectangle rect)

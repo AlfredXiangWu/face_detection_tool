@@ -53,7 +53,7 @@ namespace FaceDetectionTool_WPF
             {
                 case Key.A: btnLast_Click(btnLast, null); break;
                 case Key.D: btnNext_Click(btnNext, null); break;
-                case Key.E:Eval_Click(null, null);break;
+                case Key.E: Eval_Click(null, null); break;
             }
         }
 
@@ -84,18 +84,11 @@ namespace FaceDetectionTool_WPF
             canvas.Width = image.Width;
             canvas.Height = image.Height;
             canvas.Children.Add(image);
-            ii.ShapesPrepare();
-            foreach (var item in ii.D_Shapes)
+
+            ii.GeometriesPrepare();
+            foreach (var item in ii.GetShapes(Brushes.Blue, Brushes.Red))
                 canvas.Children.Add(item);
-            foreach (var item in ii.G_Shapes)
-                canvas.Children.Add(item);
-            foreach (var m in ii.Matches)
-            {
-                m.D_Shape.Fill = Brushes.Blue;
-                m.D_Shape.Opacity = 0.5;
-                m.G_Shape.Fill = Brushes.Red;
-                m.G_Shape.Opacity = 0.5;
-            }
+
             bd_SizeChanged(null, null);
             spInfo.DataContext = ii;
         }

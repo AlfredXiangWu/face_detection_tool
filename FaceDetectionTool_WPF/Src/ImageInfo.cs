@@ -31,36 +31,35 @@ namespace FaceDetectionTool_WPF
 
         public BitmapSource Bitmap => new BitmapImage(new Uri(Path));
 
-        public List<Shape> D_Shapes { get; set; }
+        public List<Geometry> D_Geometries { get; set; }
 
-        public List<Shape> G_Shapes { get; set; }
+        public List<Geometry> G_Geometries { get; set; }
 
-        private List<ShapeMatch> macthes;
+        private List<ShapeMatch> matches;
         public List<ShapeMatch> Matches
         {
             get
             {
-                if (macthes == null)
-                    macthes = GetMatches();
-                return macthes;
+                if (matches == null)
+                    matches = GetMatches();
+                return matches;
             }
         }
 
         public int TP => Matches.Count;
         public int FP => FrList.Count - TP;
 
-        public bool AddShapes(Brush color, TypeE type, double opacity = 1)
+        public bool CreateGeometry(TypeE type)
         {
             try
             {
-                var st = 4;
                 double xtl, ytl, width, height;
                 switch (type)
                 {
                     case TypeE.Detection:
                         {
-                            if (D_Shapes == null)
-                                D_Shapes = new List<Shape>();
+                            if (D_Geometries == null)
+                                D_Geometries = new List<Geometry>();
                             foreach (var fr in FrList)
                             {
                                 xtl = fr[0];
@@ -69,22 +68,14 @@ namespace FaceDetectionTool_WPF
                                 height = fr[3] - ytl + 1;
 
                                 var g_rt = new RectangleGeometry(new Rect(xtl, ytl, width, height));
-                                var rt = new ShapePath()
-                                {
-                                    Data = g_rt,
-                                    Opacity = opacity,
-                                    Stroke = color,
-                                    StrokeThickness = st,
-                                    Tag = g_rt,
-                                };
-                                D_Shapes.Add(rt);
+                                D_Geometries.Add(g_rt);
                             }
                         }
                         break;
                     case TypeE.Gt:
                         {
-                            if (G_Shapes == null)
-                                G_Shapes = new List<Shape>();
+                            if (G_Geometries == null)
+                                G_Geometries = new List<Geometry>();
                             foreach (var gt in GtList)
                             {
                                 if (gt.Length == 5)
@@ -103,15 +94,7 @@ namespace FaceDetectionTool_WPF
                                         RadiusY = height,
                                         Transform = rt,
                                     };
-                                    var el = new ShapePath()
-                                    {
-                                        Data = g_el,
-                                        Stroke = color,
-                                        StrokeThickness = st,
-                                        Opacity = opacity,
-                                        Tag = g_el,
-                                    };
-                                    G_Shapes.Add(el);
+                                    G_Geometries.Add(g_el);
                                 }
                                 else
                                 {
@@ -121,15 +104,7 @@ namespace FaceDetectionTool_WPF
                                     height = gt[3] - ytl + 1;
 
                                     var g_rt = new RectangleGeometry(new Rect(xtl, ytl, width, height));
-                                    var rt = new ShapePath()
-                                    {
-                                        Data = g_rt,
-                                        Stroke = color,
-                                        StrokeThickness = st,
-                                        Opacity = opacity,
-                                        Tag = g_rt,
-                                    };
-                                    G_Shapes.Add(rt);
+                                    G_Geometries.Add(g_rt);
                                 }
                             }
                         }
@@ -141,54 +116,50 @@ namespace FaceDetectionTool_WPF
             { return false; }
         }
 
-        public void ClearShapes()
+        public void ClearGeometries()
         {
-            D_Shapes?.Clear();
-            G_Shapes?.Clear();
+            D_Geometries = null;
+            G_Geometries = null;
         }
 
-        public void ShapesPrepare()
+        public void GeometriesPrepare()
         {
-            if (D_Shapes == null)
-                AddShapes(Brushes.Blue, TypeE.Detection);
-            if (G_Shapes == null)
-                AddShapes(Brushes.Red, TypeE.Gt);
+            if (D_Geometries == null)
+                CreateGeometry(TypeE.Detection);
+            if (G_Geometries == null)
+                CreateGeometry(TypeE.Gt);
         }
 
-        public IEnumerable<ShapeMatch> GetAllCouples(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative, double thr = 0.5)
+        public List<ShapeMatch> GetMatches(double tolerance = 0, ToleranceType toleranceType = ToleranceType.Relative, double thr = 0.5)
         {
-            ShapesPrepare();
-            for (int i = 0; i < G_Shapes.Count; i++)
+            GeometriesPrepare();
+            var all = new List<ShapeMatch>();
+            for (int i = 0; i < G_Geometries.Count; i++)
             {
-                var gss = G_Shapes[i];
-                for (int j = 0; j < D_Shapes.Count; j++)
+                var gg = G_Geometries[i];
+                for (int j = 0; j < D_Geometries.Count; j++)
                 {
-                    var dss = D_Shapes[j];
-                    var ds = (Geometry)dss.Tag;
-                    var gs = (Geometry)gss.Tag;
-                    var gi = Geometry.Combine(ds, gs, GeometryCombineMode.Intersect, null, tolerance, toleranceType)
+                    var dg = D_Geometries[j];
+                    var gi = Geometry.Combine(dg, gg, GeometryCombineMode.Intersect, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
-                    var gu = Geometry.Combine(ds, gs, GeometryCombineMode.Union, null, tolerance, toleranceType)
+                    var gu = Geometry.Combine(dg, gg, GeometryCombineMode.Union, null, tolerance, toleranceType)
                         .GetArea(tolerance, toleranceType);
                     if (gi / gu > thr)
-                        yield return new ShapeMatch() { IoU = gi / gu, FrIndex = j, D_Shape = dss, G_Shape = gss, Prob = FrList[j][4] };
+                        all.Add(new ShapeMatch() { IoU = gi / gu, FrIndex = j, GtIndex = i, Prob = FrList[j][4] });
                 }
             }
-        }
 
-        public List<ShapeMatch> GetMatches()
-        {
             var list = new List<ShapeMatch>();
-            var dss = new List<Shape>();
-            var gss = new List<Shape>();
-            var ordered = GetAllCouples().Where(m => m.IoU > 0.5).OrderByDescending(m => m.IoU);
+            var dss = new List<int>();
+            var gss = new List<int>();
+            var ordered = all.OrderByDescending(m => m.IoU);
             foreach (var m in ordered)
             {
-                if (dss.Contains(m.D_Shape) || gss.Contains(m.G_Shape))
+                if (dss.Contains(m.FrIndex) || gss.Contains(m.GtIndex))
                     continue;
                 list.Add(m);
-                dss.Add(m.D_Shape);
-                gss.Add(m.G_Shape);
+                dss.Add(m.FrIndex);
+                gss.Add(m.GtIndex);
             }
             return list;
         }
@@ -202,15 +173,54 @@ namespace FaceDetectionTool_WPF
                 l.Replace(' ', '\t').Split('\t')
                 .Select(s => double.Parse(s)).ToArray()).ToList();
         }
+
+        public IEnumerable<ShapePath> GetShapes(Brush ColorFr, Brush ColorGt, double Opacity = 0.5, double StrokeThickness = 4)
+        {
+            var m_fr = Matches.Select(m => m.FrIndex);
+            var m_gt = Matches.Select(m => m.GtIndex);
+            var shapes = new List<ShapePath>();
+
+            for (int i = 0; i < D_Geometries.Count; i++)
+            {
+                var rt = new ShapePath()
+                {
+                    Data = D_Geometries[i],
+                    Stroke = ColorFr,
+                    StrokeThickness = StrokeThickness,
+                };
+                if (m_fr.Contains(i))
+                {
+                    rt.Opacity = Opacity;
+                    rt.Fill = ColorFr;
+                }
+                shapes.Add(rt);
+            }
+
+            for (int i = 0; i < G_Geometries.Count; i++)
+            {
+                var rt = new ShapePath()
+                {
+                    Data = G_Geometries[i],
+                    Stroke = ColorGt,
+                    StrokeThickness = StrokeThickness,
+                };
+                if (m_gt.Contains(i))
+                {
+                    rt.Opacity = Opacity;
+                    rt.Fill = ColorGt;
+                }
+                shapes.Add(rt);
+            }
+            return shapes;
+        }
     }
 
     public class ShapeMatch
     {
         public double IoU;
-        public Shape G_Shape;
-        public Shape D_Shape;
         public double Prob;
         public int FrIndex;
+        public int GtIndex;
     }
     public enum TypeE { Image, Detection, Gt }
 }
