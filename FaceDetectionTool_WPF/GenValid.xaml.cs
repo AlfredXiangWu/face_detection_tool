@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using FDialogResult = System.Windows.Forms.DialogResult;
 using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
+using static System.Math;
 
 
 namespace FaceDetectionTool_WPF
@@ -55,10 +56,13 @@ namespace FaceDetectionTool_WPF
                     {
                         if (ii.GtList[j].Length == 5)
                         {
-                            xtl = ii.GtList[j][3] - ii.GtList[j][0];
-                            ytl = ii.GtList[j][4] - ii.GtList[j][0];
-                            width = ii.GtList[j][0] * 2;
-                            height = ii.GtList[j][0] * 2;
+                            var a = ii.GtList[j][0];
+                            var b = ii.GtList[j][1];
+                            var w = ii.GtList[j][2];
+                            width = 2 * Sqrt(Pow(a, 2) + (Pow(b, 2) - Pow(a, 2)) * Pow(Sin(w), 2));
+                            height = 2 * Sqrt(Pow(a, 2) + (Pow(b, 2) - Pow(a, 2)) * Pow(Cos(w), 2));
+                            xtl = ii.GtList[j][3] - 0.5 * width;
+                            ytl = ii.GtList[j][4] - 0.5 * height;
                         }
                         else
                         {
