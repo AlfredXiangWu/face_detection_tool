@@ -16,7 +16,7 @@ namespace face_detection_tool
 
         public Configuration()
         {
-            InitializeComponent();
+            InitializeComponent();  
         }
 
         /// <summary>

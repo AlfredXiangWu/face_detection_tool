@@ -371,10 +371,19 @@ namespace face_detection_tool
                 {
                     if (image_info_list[i].GtFrList[j].Length == 5)
                     {
+                        double a, b, w;
+                        a = image_info_list[i].GtFrList[j][0];
+                        b = image_info_list[i].GtFrList[j][1];
+                        w = image_info_list[i].GtFrList[j][2];
+                        /*
                         xtl = image_info_list[i].GtFrList[j][3] - image_info_list[i].GtFrList[j][0] * 0.8;
                         ytl = image_info_list[i].GtFrList[j][4] - image_info_list[i].GtFrList[j][0] * 0.8;
                         width = image_info_list[i].GtFrList[j][0]  * 2*0.8;
-                        height = image_info_list[i].GtFrList[j][0]  * 2*0.8;
+                        height = image_info_list[i].GtFrList[j][0]  * 2*0.8;*/
+                        width = 2 * Math.Sqrt(Math.Pow(a, 2) + (Math.Pow(b, 2) - Math.Pow(a, 2)) * Math.Pow(Math.Sin(w), 2));
+                        height = 2 * Math.Sqrt(Math.Pow(a, 2) + (Math.Pow(b, 2) - Math.Pow(a, 2)) * Math.Pow(Math.Cos(w), 2));
+                        xtl = image_info_list[i].GtFrList[j][3] - 0.5 * width;
+                        ytl = image_info_list[i].GtFrList[j][4] - 0.5 * height;
                     }
                     else
                     {
@@ -442,6 +451,11 @@ namespace face_detection_tool
             g.DrawImage(image, 0, 0, rect, GraphicsUnit.Pixel);
             g.Dispose();
             return crop;
+        }
+
+        private void compareToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
         
     }
