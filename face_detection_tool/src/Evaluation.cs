@@ -66,10 +66,17 @@ namespace face_detection_tool
 
             if (gt_face_fr.Length == 5)
             {
-                xtl1 = gt_face_fr[3] - gt_face_fr[0] / Math.Sqrt(2);
-                ytl1 = gt_face_fr[4] - gt_face_fr[0] / Math.Sqrt(2);
-                xbr1 = xtl1 + gt_face_fr[0] / Math.Sqrt(2) * 2 - 1;
-                ybr1 = ytl1 + gt_face_fr[0] / Math.Sqrt(2) * 2 - 1;
+                double a, b, w, width, height;
+                a = gt_face_fr[0];
+                b = gt_face_fr[1];
+                w = gt_face_fr[2];
+
+                width = 2 * Math.Sqrt(Math.Pow(a, 2) + (Math.Pow(b, 2) - Math.Pow(a, 2)) * Math.Pow(Math.Sin(w), 2));
+                height = 2 * Math.Sqrt(Math.Pow(a, 2) + (Math.Pow(b, 2) - Math.Pow(a, 2)) * Math.Pow(Math.Cos(w), 2));
+                xtl1 = gt_face_fr[3] - 0.5 * width;
+                ytl1 = gt_face_fr[4] - 0.5 * height;
+                xbr1 = xtl1 + width - 1;
+                ybr1 = ytl1 + height - 1;
             }
             else
             {
