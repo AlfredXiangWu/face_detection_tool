@@ -34,7 +34,7 @@ namespace FaceDetectionTool_WPF
 
         private async void btnDo_Click(object sender, RoutedEventArgs e)
         {
-            var il = win.imageInfoList;
+            var il = win.ImageInfoList;
             pb.Maximum = il.Count;
             pb.Value = 0;
             var dir = tbDir.Text;

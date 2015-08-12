@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.ComponentModel;
 using static FaceDetectionTool_WPF.Properties.Settings;
 
 namespace FaceDetectionTool_WPF
@@ -20,19 +21,39 @@ namespace FaceDetectionTool_WPF
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public MainWindow()
         {
             InitializeComponent();
             Width = Default.WinWidth;
             Height = Default.WinHeight;
+            spIndex.DataContext = this;
         }
 
         ImagePath imagePath = new ImagePath();
-        public List<ImageInfo> imageInfoList;
+
+        private List<ImageInfo> imageInfoList;
+        public List<ImageInfo> ImageInfoList
+        {
+            get { return imageInfoList; }
+            set { imageInfoList = value; OnPropertyChanged(nameof(ImageInfoList)); }
+        }
         private int index = 0;
+        public int Index
+        {
+            get { return index + 1; }
+            set { index = value - 1; OnPropertyChanged(nameof(Index)); }
+        }
+
         private ImageSource img;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
@@ -40,7 +61,7 @@ namespace FaceDetectionTool_WPF
             new_configuration.Accept = (s) =>
             {
                 imagePath = s.ImagePath;
-                imageInfoList = imagePath.GetImageInfoList();
+                ImageInfoList = imagePath.GetImageInfoList();
                 ShowImg();
                 this.Activate();
             };
@@ -59,25 +80,25 @@ namespace FaceDetectionTool_WPF
 
         private void btnLast_Click(object sender, RoutedEventArgs e)
         {
-            index--;
-            if (index == -1)
-                index = imageInfoList.Count - 1;
+            Index--;
             ShowImg();
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            index++;
-            if (index == imageInfoList.Count)
-                index = 0;
+            Index++;
             ShowImg();
         }
 
         private void ShowImg()
         {
-            if (imageInfoList.Count == 0)
+            if (ImageInfoList.Count == 0)
                 return;
-            var ii = imageInfoList[index];
+            if (Index > ImageInfoList.Count)
+                Index = ImageInfoList.Count;
+            else if (Index < 1)
+                Index = 1;
+            var ii = ImageInfoList[index];
             canvas.Children.Clear();
             img = ii.Bitmap;
             var image = new Image() { Source = img };
@@ -109,9 +130,9 @@ namespace FaceDetectionTool_WPF
 
         private void sliderThr_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (imageInfoList == null)
+            if (ImageInfoList == null)
                 return;
-            var p = imageInfoList.EvalRecallAndPrecision(sliderThr.Value);
+            var p = ImageInfoList.EvalRecallAndPrecision(sliderThr.Value);
             tbRecall.Text = p.X.ToString("0.0000%");
             tbPrecision.Text = p.Y.ToString("0.0000%");
         }
@@ -120,9 +141,11 @@ namespace FaceDetectionTool_WPF
         {
             if (img == null)
                 return;
+            var bw = bd.ActualWidth - 2;
+            var bh = bd.ActualHeight - 2;
             var ir = img.Width / img.Height;
-            var sr = bd.ActualWidth / bd.ActualHeight;
-            var r = ir > sr ? bd.ActualWidth / img.Width : bd.ActualHeight / img.Height;
+            var sr = bw / bh;
+            var r = ir > sr ? bw / img.Width : bh / img.Height;
             canvas.RenderTransform = new ScaleTransform(r, r);
         }
 
@@ -130,6 +153,15 @@ namespace FaceDetectionTool_WPF
         {
             var win = new GenValid(this);
             win.Show();
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ((TextBox)sender).GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                ShowImg();
+            }
         }
     }
 }

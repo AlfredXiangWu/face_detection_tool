@@ -34,7 +34,7 @@ namespace FaceDetectionTool_WPF
             var sw = new Stopwatch();
             sw.Start();
 
-            var points = win.imageInfoList.EvalPoints();
+            var points = win.ImageInfoList.EvalPoints();
             lbCount.Content = "points: " + points.Length.ToString();
 
             var g = new StreamGeometry();
