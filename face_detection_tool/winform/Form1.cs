@@ -76,6 +76,8 @@ namespace face_detection_tool
             image_info_list = io.getImageInfo();
 
             showImage();
+            textBox4.Text = (index + 1).ToString();
+            textBox5.Text = image_info_list.Count.ToString();
 
              new_configuration.Hide();
         }
@@ -94,6 +96,7 @@ namespace face_detection_tool
             }
             index = index - 1;
 
+            textBox4.Text = (index + 1).ToString();
             showImage();
         }
 
@@ -110,6 +113,7 @@ namespace face_detection_tool
             }
             index = index + 1;
 
+            textBox4.Text = (index + 1).ToString();
             showImage();
         }
 
@@ -456,6 +460,13 @@ namespace face_detection_tool
         private void compareToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            index = Convert.ToInt32(textBox4.Text);
+            index = index - 1;
+            showImage();
         }
         
     }
