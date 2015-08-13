@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Diagnostics;
-using System.ComponentModel;
 using static FaceDetectionTool_WPF.Properties.Settings;
 
 namespace FaceDetectionTool_WPF
@@ -28,10 +19,8 @@ namespace FaceDetectionTool_WPF
             InitializeComponent();
             Width = Default.WinWidth;
             Height = Default.WinHeight;
-            spIndex.DataContext = this;
+            DataContext = this;
         }
-
-        ImagePath imagePath = new ImagePath();
 
         private List<ImageInfo> imageInfoList;
         public List<ImageInfo> ImageInfoList
@@ -39,11 +28,29 @@ namespace FaceDetectionTool_WPF
             get { return imageInfoList; }
             set { imageInfoList = value; OnPropertyChanged(nameof(ImageInfoList)); }
         }
+
         private int index = 0;
         public int Index
         {
             get { return index + 1; }
-            set { index = value - 1; OnPropertyChanged(nameof(Index)); }
+            set
+            {
+                if (index != value - 1)
+                { index = value - 1; IndexChanged(); }
+            }
+        }
+
+        private void IndexChanged()
+        {
+            OnPropertyChanged(nameof(Index));
+            ShowImg();
+        }
+
+        private ImageInfo imageInfo;
+        public ImageInfo CurrentImageInfo
+        {
+            get { return imageInfo; }
+            set { imageInfo = value; OnPropertyChanged(nameof(CurrentImageInfo)); }
         }
 
         private ImageSource img;
@@ -60,10 +67,9 @@ namespace FaceDetectionTool_WPF
             var new_configuration = new Configuration();
             new_configuration.Accept = (s) =>
             {
-                imagePath = s.ImagePath;
-                ImageInfoList = imagePath.GetImageInfoList();
+                ImageInfoList = s.ImagePath.GetImageInfoList();
                 ShowImg();
-                this.Activate();
+                s.Close();
             };
             new_configuration.Show();
         }
@@ -72,23 +78,15 @@ namespace FaceDetectionTool_WPF
         {
             switch (e.Key)
             {
-                case Key.A: btnLast_Click(btnLast, null); break;
-                case Key.D: btnNext_Click(btnNext, null); break;
+                case Key.A: Index--; break;
+                case Key.D: Index++; break;
                 case Key.E: Eval_Click(null, null); break;
             }
         }
 
-        private void btnLast_Click(object sender, RoutedEventArgs e)
-        {
-            Index--;
-            ShowImg();
-        }
+        private void btnLast_Click(object sender, RoutedEventArgs e) => Index--;
 
-        private void btnNext_Click(object sender, RoutedEventArgs e)
-        {
-            Index++;
-            ShowImg();
-        }
+        private void btnNext_Click(object sender, RoutedEventArgs e) => Index++;
 
         private void ShowImg()
         {
@@ -98,20 +96,19 @@ namespace FaceDetectionTool_WPF
                 Index = ImageInfoList.Count;
             else if (Index < 1)
                 Index = 1;
-            var ii = ImageInfoList[index];
+            CurrentImageInfo = ImageInfoList[index];
             canvas.Children.Clear();
-            img = ii.Bitmap;
+            img = CurrentImageInfo.Bitmap;
             var image = new Image() { Source = img };
             canvas.Width = image.Width;
             canvas.Height = image.Height;
             canvas.Children.Add(image);
 
-            ii.GeometriesPrepare();
-            foreach (var item in ii.GetShapes(Brushes.Blue, Brushes.Red))
+            CurrentImageInfo.GeometriesPrepare();
+            foreach (var item in CurrentImageInfo.GetShapes(Brushes.Blue, Brushes.Red))
                 canvas.Children.Add(item);
 
             bd_SizeChanged(null, null);
-            spInfo.DataContext = ii;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -158,10 +155,7 @@ namespace FaceDetectionTool_WPF
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
                 ((TextBox)sender).GetBindingExpression(TextBox.TextProperty).UpdateSource();
-                ShowImg();
-            }
         }
     }
 }

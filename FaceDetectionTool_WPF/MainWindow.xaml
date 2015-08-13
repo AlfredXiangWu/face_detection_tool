@@ -23,7 +23,7 @@
         <Border x:Name="bd" Margin="5,28,5,30" SizeChanged="bd_SizeChanged" BorderBrush="Black" BorderThickness="1">
             <Canvas x:Name="canvas"/>
         </Border>
-        <StackPanel x:Name="spIndex" VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,5,5">
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,5,5">
             <TextBox FontSize="16" Width="50" Text="{Binding Index}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="TextBox_KeyDown"/>
             <Label Content="/" FontSize="16" Padding="0" Margin="5,0"/>
             <TextBox  Width="50" IsReadOnly="True" FontSize="16" Text="{Binding ImageInfoList.Count,Mode=OneWay}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -34,7 +34,10 @@
         <Label Content="Thr" Grid.Column="1" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Height="25"/>
         <TextBox Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,76,10,0" TextWrapping="Wrap" Text="{Binding ElementName=sliderThr,Path=Value,StringFormat=0.0000000,Mode=TwoWay}" VerticalAlignment="Top" Width="85" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         <Label Content="Precision" Grid.Column="1" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
-        <StackPanel x:Name="spInfo" Grid.Column="1" Margin="10,0,10,10" VerticalAlignment="Bottom">
+        <TextBox IsReadOnly="True" x:Name="tbPrecision" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,131,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="85"/>
+        <Label Content="Recall" Grid.Column="1" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top"/>
+        <TextBox IsReadOnly="True" x:Name="tbRecall" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,161,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="85"/>
+        <StackPanel DataContext="{Binding CurrentImageInfo}" Grid.Column="1" Margin="10,0,10,10" VerticalAlignment="Bottom">
             <GroupBox Header="Image Path"  VerticalAlignment="Top">
                 <TextBox Text="{Binding Path}" TextWrapping="Wrap" Height="70"/>
             </GroupBox>
@@ -53,9 +56,5 @@
                 </Grid>
             </GroupBox>
         </StackPanel>
-        <TextBox x:Name="tbPrecision" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,131,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="85"/>
-        <Label Content="Recall" Grid.Column="1" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbRecall" Grid.Column="1" HorizontalAlignment="Right" Height="23" Margin="0,161,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="85"/>
-
     </Grid>
 </Window>
