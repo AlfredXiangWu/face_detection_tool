@@ -101,7 +101,7 @@
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(612, 23);
             this.textBox5.TabIndex = 5;
-            this.textBox5.Text = "Z:\\User\\wuxiang\\Result\\face_detection\\Deep_Detector0.1.11.1\\result\\FDDB";
+            this.textBox5.Text = "D:\\BING\\fr";
             // 
             // textBox6
             // 
@@ -236,8 +236,7 @@
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(612, 23);
             this.textBox9.TabIndex = 16;
-            this.textBox9.Text = "Z:\\User\\wuxiang\\data\\face_detection\\FDDB\\originalPics";
-            this.textBox9.TextChanged += new System.EventHandler(this.textBox9_TextChanged);
+            this.textBox9.Text = "D:\\BING\\Proposal\\img";
             // 
             // textBox10
             // 

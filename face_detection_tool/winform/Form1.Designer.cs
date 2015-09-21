@@ -174,7 +174,8 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox1.Location = new System.Drawing.Point(0, 25);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(439, 530);
+            this.pictureBox1.Size = new System.Drawing.Size(439, 537);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
@@ -182,7 +183,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(930, 25);
+            this.button1.Location = new System.Drawing.Point(936, 25);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(53, 22);
             this.button1.TabIndex = 2;
@@ -194,7 +195,7 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(1021, 25);
+            this.button2.Location = new System.Drawing.Point(1027, 25);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(53, 22);
             this.button2.TabIndex = 3;
@@ -212,7 +213,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.trackBar1);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(910, 69);
+            this.groupBox1.Location = new System.Drawing.Point(916, 69);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(180, 183);
             this.groupBox1.TabIndex = 4;
@@ -297,23 +298,22 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.textBox5);
             this.panel1.Controls.Add(this.textBox4);
-            this.panel1.Location = new System.Drawing.Point(904, 536);
+            this.panel1.Location = new System.Drawing.Point(883, 543);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 19);
+            this.panel1.Size = new System.Drawing.Size(227, 19);
             this.panel1.TabIndex = 5;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(135, 0);
+            this.button3.Location = new System.Drawing.Point(140, -1);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(36, 19);
+            this.button3.Size = new System.Drawing.Size(45, 21);
             this.button3.TabIndex = 3;
-            this.button3.Text = "ok";
+            this.button3.Text = "OK";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -321,7 +321,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(54, 0);
+            this.label4.Location = new System.Drawing.Point(64, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(16, 16);
             this.label4.TabIndex = 2;
@@ -329,16 +329,18 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(76, 0);
+            this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox5.Location = new System.Drawing.Point(88, 0);
             this.textBox5.Name = "textBox5";
             this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(30, 21);
+            this.textBox5.Size = new System.Drawing.Size(28, 21);
             this.textBox5.TabIndex = 1;
             // 
             // textBox4
             // 
             this.textBox4.BackColor = System.Drawing.SystemColors.Menu;
-            this.textBox4.Location = new System.Drawing.Point(20, 0);
+            this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox4.Location = new System.Drawing.Point(28, 0);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(28, 21);
             this.textBox4.TabIndex = 0;
@@ -347,9 +349,10 @@
             // 
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.Location = new System.Drawing.Point(441, 25);
+            this.pictureBox2.Location = new System.Drawing.Point(447, 25);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(463, 530);
+            this.pictureBox2.Size = new System.Drawing.Size(439, 537);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 6;
             this.pictureBox2.TabStop = false;
             // 
@@ -357,7 +360,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1102, 555);
+            this.ClientSize = new System.Drawing.Size(1108, 562);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox1);

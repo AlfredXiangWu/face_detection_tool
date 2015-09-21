@@ -119,11 +119,6 @@ namespace face_detection_tool
             }
         }
 
-        private void textBox9_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button7_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();

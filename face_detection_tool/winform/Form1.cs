@@ -50,9 +50,10 @@ namespace face_detection_tool
                 img = new Bitmap(image_info_list[index].ImgPath);
                 pictureBox1.Image = img;
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                io.showFR(pictureBox1.Image, image_info_list[index]);
-                imgProposal = new Bitmap(image_info_list[index].FaceProposalImgPath);
+                imgProposal = new Bitmap(image_info_list[index].FaceProposalImgPath); 
                 pictureBox2.Image = imgProposal;
+                pictureBox2.Show();
+                io.showFR(pictureBox1.Image, image_info_list[index]);
             }
             catch
             {

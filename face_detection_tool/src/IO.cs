@@ -46,7 +46,7 @@ namespace face_detection_tool
                 var name = txt.ReadLine();
                 image_info.ImgPath = Path.Combine(FrmImagePath, name);
                 image_info.RelativeImgPath = name.Split('.')[0];
-                image_info.FaceProposalImgPath = image_info.ImgPath + "_Match.jpg";
+                image_info.FaceProposalImgPath = Path.Combine(FrmFaceProposalPath, name + "_Match.jpg"); 
                 var tmp = image_info.RelativeImgPath;
                 image_info.DetectFrPath = Path.Combine(FrmDetectionFrPath, tmp + ".fr");
                 image_info.GtFrPath = Path.Combine(FrmGtFrPath, tmp + ".fr");
