@@ -17,6 +17,8 @@ namespace face_detection_tool
         /// </summary>
         public string RelativeImgPath { get; set; }
 
+        public string FaceProposalImgPath { get; set; }
+
         /// <summary>
         /// Detection FR Path
         /// </summary>

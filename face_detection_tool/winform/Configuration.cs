@@ -67,6 +67,7 @@ namespace face_detection_tool
             io.FrmList = textBox3.Text;
             io.FrmDetectionFrPath = textBox5.Text;
             io.FrmGtFrPath = textBox7.Text;
+            io.FrmFaceProposalPath = textBox9.Text;
 
             if (accept != null)
             {
@@ -115,6 +116,21 @@ namespace face_detection_tool
                 this.textBox3.Text = "";
                 this.textBox5.Text = "";
                 this.textBox7.Text = "";
+            }
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "Select Image File Path";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                textBox9.Text = dialog.SelectedPath;
             }
         }
 

@@ -43,6 +43,9 @@
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button7 = new System.Windows.Forms.Button();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.textBox10 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -66,7 +69,7 @@
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.textBox2.Size = new System.Drawing.Size(612, 23);
             this.textBox2.TabIndex = 1;
-            this.textBox2.Text = "Z:\\User\\wuxiang\\data\\FDDB\\originalPics";
+            this.textBox2.Text = "Z:\\User\\wuxiang\\data\\face_detection\\FDDB\\originalPics";
             // 
             // textBox3
             // 
@@ -76,7 +79,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(612, 23);
             this.textBox3.TabIndex = 3;
-            this.textBox3.Text = "Z:\\User\\wuxiang\\data\\FDDB\\FDDB_list.txt";
+            this.textBox3.Text = "Z:\\User\\wuxiang\\data\\face_detection\\FDDB\\FDDB.txt";
             // 
             // textBox4
             // 
@@ -147,7 +150,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(151, 414);
+            this.button4.Location = new System.Drawing.Point(150, 473);
             this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(129, 33);
@@ -158,7 +161,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(376, 414);
+            this.button5.Location = new System.Drawing.Point(375, 473);
             this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(129, 33);
@@ -169,7 +172,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(578, 314);
+            this.button6.Location = new System.Drawing.Point(581, 401);
             this.button6.Margin = new System.Windows.Forms.Padding(4);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(52, 33);
@@ -181,19 +184,19 @@
             // textBox7
             // 
             this.textBox7.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox7.Location = new System.Drawing.Point(17, 355);
+            this.textBox7.Location = new System.Drawing.Point(20, 442);
             this.textBox7.Margin = new System.Windows.Forms.Padding(4);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(612, 23);
             this.textBox7.TabIndex = 12;
-            this.textBox7.Text = "Z:\\User\\wuxiang\\data\\FDDB\\gt";
+            this.textBox7.Text = "Z:\\User\\wuxiang\\data\\face_detection\\FDDB\\gt";
             // 
             // textBox8
             // 
             this.textBox8.BackColor = System.Drawing.SystemColors.Menu;
             this.textBox8.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox8.Location = new System.Drawing.Point(17, 324);
+            this.textBox8.Location = new System.Drawing.Point(20, 411);
             this.textBox8.Margin = new System.Windows.Forms.Padding(4);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(133, 16);
@@ -214,11 +217,48 @@
             this.comboBox1.TabIndex = 14;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(579, 315);
+            this.button7.Margin = new System.Windows.Forms.Padding(4);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(52, 33);
+            this.button7.TabIndex = 17;
+            this.button7.Text = "...";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // textBox9
+            // 
+            this.textBox9.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBox9.Location = new System.Drawing.Point(18, 356);
+            this.textBox9.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(612, 23);
+            this.textBox9.TabIndex = 16;
+            this.textBox9.Text = "Z:\\User\\wuxiang\\data\\face_detection\\FDDB\\originalPics";
+            this.textBox9.TextChanged += new System.EventHandler(this.textBox9_TextChanged);
+            // 
+            // textBox10
+            // 
+            this.textBox10.BackColor = System.Drawing.SystemColors.Menu;
+            this.textBox10.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox10.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBox10.Location = new System.Drawing.Point(18, 325);
+            this.textBox10.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(150, 16);
+            this.textBox10.TabIndex = 15;
+            this.textBox10.Text = "Face Proposal Path";
+            // 
             // Configuration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 469);
+            this.ClientSize = new System.Drawing.Size(650, 528);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.textBox9);
+            this.Controls.Add(this.textBox10);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.textBox7);
@@ -260,5 +300,8 @@
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox textBox10;
     }
 }
